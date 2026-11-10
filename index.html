@@ -1,3 +1,6 @@
+Here is the updated code with the **"Add Drop Site"** button and modal completely disabled and removed from the view, giving your donors a clean, read-only map and site list.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,14 +60,10 @@
             </div>
             
             <div class="flex items-center space-x-3">
-                <!-- Action Buttons -->
-                <button onclick="exportData('csv')" class="hidden sm:flex items-center space-x-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-3 py-2 rounded-lg transition">
+                <!-- Export Button -->
+                <button onclick="exportData('csv')" class="flex items-center space-x-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-3 py-2 rounded-lg transition">
                     <i data-lucide="download" class="w-3.5 h-3.5"></i>
                     <span>Export CSV</span>
-                </button>
-                <button onclick="openAddModal()" class="flex items-center space-x-1 text-xs bg-red-600 hover:bg-red-700 text-white font-semibold px-3 py-2 rounded-lg transition shadow-md shadow-red-600/20">
-                    <i data-lucide="plus" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline">Add Drop Site</span>
                 </button>
             </div>
         </div>
@@ -230,7 +229,6 @@
             
             <!-- Simulated Map Container -->
             <div class="relative w-full h-96 bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center bg-pattern">
-                <!-- SVG Map Grid Graphic -->
                 <svg class="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
                     <line x1="0" y1="20%" x2="100%" y2="20%" stroke="#475569" stroke-dasharray="4" />
                     <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#475569" stroke-dasharray="4" />
@@ -239,9 +237,8 @@
                     <line x1="60%" y1="0" x2="60%" y2="100%" stroke="#475569" stroke-dasharray="4" />
                 </svg>
 
-                <!-- Map Pins Overlay -->
                 <div id="mapPinsContainer" class="relative w-full h-full">
-                    <!-- Dynamic Map Pins Injected Here -->
+                    <!-- Dynamic Map Pins -->
                 </div>
             </div>
         </div>
@@ -278,62 +275,8 @@
         </div>
     </footer>
 
-    <!-- Add Site Modal -->
-    <div id="addModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 class="text-base font-bold text-white flex items-center gap-2">
-                    <i data-lucide="plus-circle" class="w-5 h-5 text-red-500"></i>
-                    Add New Drop Site
-                </h3>
-                <button onclick="closeAddModal()" class="text-slate-400 hover:text-white">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <form id="addSiteForm" onsubmit="handleFormSubmit(event)" class="space-y-3 text-xs">
-                <div>
-                    <label class="block text-slate-300 font-semibold mb-1">Business Name *</label>
-                    <input type="text" id="formName" required placeholder="e.g. Ridgecrest Hardware" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-red-500">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-slate-300 font-semibold mb-1">City *</label>
-                        <select id="formCity" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-red-500">
-                            <option value="Ridgecrest">Ridgecrest</option>
-                            <option value="Inyokern">Inyokern</option>
-                            <option value="Trona">Trona</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-slate-300 font-semibold mb-1">Category</label>
-                        <select id="formCategory" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-red-500">
-                            <option value="Retail & Shopping">Retail & Shopping</option>
-                            <option value="Dining & Cafe">Dining & Cafe</option>
-                            <option value="Community & Museum">Community & Museum</option>
-                            <option value="Services & Fitness">Services & Fitness</option>
-                            <option value="Entertainment & Hobbies">Entertainment & Hobbies</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-slate-300 font-semibold mb-1">Street Address *</label>
-                    <input type="text" id="formAddress" required placeholder="e.g. 123 Main St" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-red-500">
-                </div>
-                <div>
-                    <label class="block text-slate-300 font-semibold mb-1">Phone Number (Required for confirmation call) *</label>
-                    <input type="text" id="formPhone" required placeholder="e.g. (760) 555-0199" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-red-500">
-                </div>
-                <div class="pt-2 flex justify-end gap-2">
-                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-medium">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold shadow-md shadow-red-600/30">Save Location</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- JavaScript App Logic -->
     <script>
-        // Collection sites dataset (24 total locations)
         const initialDropSites = [
             { id: 1, name: "Ridgecrest Chamber of Commerce", city: "Ridgecrest", address: "128 E California Ave, Ridgecrest, CA 93555", phone: "(760) 375-8572", category: "Community & Museum", mapX: 48, mapY: 52 },
             { id: 2, name: "China Lake Museum", city: "Ridgecrest", address: "130 E Las Flores Ave, Ridgecrest, CA 93555", phone: "(760) 375-6900", category: "Community & Museum", mapX: 52, mapY: 42 },
@@ -363,7 +306,6 @@
 
         let sitesData = [...initialDropSites];
 
-        // Render Cards View
         function renderCards(sites) {
             const container = document.getElementById('cardsView');
             if (sites.length === 0) {
@@ -395,7 +337,6 @@
                         </p>
                     </div>
 
-                    <!-- Call First Disclaimer Badge -->
                     <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-2 flex items-center gap-2 text-[11px] text-amber-300">
                         <i data-lucide="phone-call" class="w-3.5 h-3.5 shrink-0 text-amber-400"></i>
                         <span>Call before dropping off: <strong>${site.phone}</strong></span>
@@ -416,7 +357,6 @@
             lucide.createIcons();
         }
 
-        // Render Table View
         function renderTable(sites) {
             const body = document.getElementById('tableBody');
             body.innerHTML = sites.map(site => `
@@ -437,7 +377,6 @@
             lucide.createIcons();
         }
 
-        // Render Interactive Map Pins
         function renderMapPins(sites) {
             const container = document.getElementById('mapPinsContainer');
             container.innerHTML = sites.map(site => `
@@ -445,7 +384,6 @@
                     <div class="bg-red-600 hover:bg-red-500 text-white p-2 rounded-full shadow-lg border-2 border-slate-900 transition transform group-hover:scale-125">
                         <i data-lucide="gift" class="w-3.5 h-3.5"></i>
                     </div>
-                    <!-- Tooltip Hover Card -->
                     <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 bg-slate-900 border border-slate-700 text-slate-100 p-2.5 rounded-xl shadow-2xl text-[11px] opacity-0 group-hover:opacity-100 pointer-events-none transition duration-150 z-20">
                         <div class="font-bold text-white mb-0.5">${site.name}</div>
                         <div class="text-slate-400 text-[10px] mb-1">${site.address}</div>
@@ -456,7 +394,6 @@
             lucide.createIcons();
         }
 
-        // Filter Logic
         function filterSites() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             const city = document.getElementById('cityFilter').value;
@@ -476,7 +413,6 @@
             document.getElementById('totalSitesCount').innerText = `${filtered.length} Active`;
         }
 
-        // View Mode Switcher
         function setView(mode) {
             document.getElementById('cardsView').classList.toggle('hidden', mode !== 'cards');
             document.getElementById('tableView').classList.toggle('hidden', mode !== 'table');
@@ -495,29 +431,6 @@
             if (mode === 'map') btnMap.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-slate-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition";
         }
 
-        // Modal Controls
-        function openAddModal() { document.getElementById('addModal').classList.remove('hidden'); }
-        function closeAddModal() { document.getElementById('addModal').classList.add('hidden'); }
-
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const newSite = {
-                id: Date.now(),
-                name: document.getElementById('formName').value,
-                city: document.getElementById('formCity').value,
-                category: document.getElementById('formCategory').value,
-                address: document.getElementById('formAddress').value,
-                phone: document.getElementById('formPhone').value,
-                mapX: 50,
-                mapY: 50
-            };
-            sitesData.unshift(newSite);
-            filterSites();
-            closeAddModal();
-            document.getElementById('addSiteForm').reset();
-        }
-
-        // Export Function
         function exportData(type) {
             const csvContent = "data:text/csv;charset=utf-8," 
                 + ["Name,City,Address,Phone,Category"].concat(sitesData.map(s => `"${s.name}","${s.city}","${s.address}","${s.phone}","${s.category}"`)).join("\n");
@@ -530,7 +443,6 @@
             document.body.removeChild(link);
         }
 
-        // Initial Load
         window.onload = () => {
             filterSites();
             lucide.createIcons();
@@ -538,3 +450,5 @@
     </script>
 </body>
 </html>
+
+```
