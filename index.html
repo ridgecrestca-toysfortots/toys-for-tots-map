@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toys for Tots Drop Site Locator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        festive: {
+                            red: '#D90429',
+                            darkred: '#EF233C',
+                            green: '#2B9348',
+                            lightgreen: '#55A630',
+                            gold: '#FFB703',
+                            navy: '#1A2E40'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .pin-bounce { animation: bounce 2s infinite; }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col text-slate-800 antialiased selection:bg-festive-red selection:text-white">
+
+    <!-- Top Urgent Needs Announcement Banner -->
+    <div class="bg-gradient-to-r from-festive-red via-red-600 to-festive-darkred text-white py-2.5 px-4 text-xs sm:text-sm font-medium border-b border-red-700 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+            <div class="flex items-center gap-2">
+                <span class="bg-white text-festive-red text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-md shadow-sm animate-pulse">Urgent Need</span>
+                <span>Serving children <strong>ages 0 to 12</strong>. Highest need: <strong>Ages 0–2 (Infants)</strong> &amp; <strong>Ages 10–12 (Pre-teens, esp. Females)</strong>!</span>
+            </div>
+            <a href="#accepted-items" onclick="scrollToGuidelines()" class="underline hover:text-festive-gold text-xs whitespace-nowrap font-semibold">
+                See Gift Ideas <i class="fa-solid fa-arrow-right text-[10px] ml-0.5"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-3 bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-2xl border border-slate-700">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toast-msg" class="text-sm font-medium">Action completed successfully!</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="bg-festive-navy text-white sticky top-0 z-40 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand & Logo -->
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 bg-festive-red rounded-2xl flex items-center justify-center shadow-lg shadow-festive-red/30">
+                        <i class="fa-solid fa-train text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs uppercase tracking-widest font-bold text-festive-gold">Official Drive</span>
+                            <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white leading-none">
+                            Toys for Tots <span class="font-normal text-slate-300 text-lg hidden sm:inline">| Drop Locator</span>
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Header Actions -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openAddModal()" class="inline-flex items-center gap-2 bg-festive-green hover:bg-festive-lightgreen text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition duration-200 shadow-md hover:shadow-lg">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                        <span class="hidden sm:inline">Add Drop Site</span>
+                    </button>
+                    <div class="relative group">
+                        <button class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-2.5 rounded-xl transition border border-slate-700 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-download text-festive-gold"></i>
+                            <span class="hidden md:inline font-medium">Export</span>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-xl border border-slate-100 py-1.5 hidden group-hover:block z-50 text-slate-700 text-sm">
+                            <button onclick="exportData('json')" class="w-full text-left px-4 py-2 hover:bg-slate-50 flex items-center gap-2">
+                                <i class="fa-solid fa-file-code text-indigo-500"></i> JSON File
+                            </button>
+                            <button onclick="exportData('csv')" class="w-full text-left px-4 py-2 hover:bg-slate-50 flex items-center gap-2">
+                                <i class="fa-solid fa-file-csv text-emerald-500"></i> CSV Spreadsheet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+        <!-- Hero & Campaign Stats Banner -->
+        <section class="bg-gradient-to-r from-festive-navy via-slate-900 to-festive-navy text-white pt-8 pb-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800 relative overflow-hidden">
+            <!-- Background Decorative Stars -->
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+                <i class="fa-solid fa-snowflake text-4xl absolute top-10 left-10"></i>
+                <i class="fa-solid fa-snowflake text-2xl absolute top-20 right-24"></i>
+                <i class="fa-solid fa-snowflake text-5xl absolute bottom-5 left-1/3"></i>
+                <i class="fa-solid fa-gift text-6xl absolute top-12 right-1/4"></i>
+            </div>
+
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <!-- Text Header -->
+                    <div class="lg:col-span-7 space-y-3">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-festive-red/20 border border-festive-red/40 text-festive-red text-xs font-bold uppercase tracking-wider">
+                            <i class="fa-solid fa-heart text-xs"></i> Bring Joy This Holiday Season
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+                            Find a Toy Collection Site Near You
+                        </h2>
+                        <p class="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed">
+                            Drop off new, unwrapped toys at any verified location below. Your generosity helps deliver hope to children in our local community!
+                        </p>
+                    </div>
+
+                    <!-- Live Drive Dashboard Stats -->
+                    <div class="lg:col-span-5 grid grid-cols-2 gap-3 sm:gap-4">
+                        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 flex flex-col justify-between">
+                            <div class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                                <span>Active Locations</span>
+                                <i class="fa-solid fa-box-archive text-festive-gold"></i>
+                            </div>
+                            <div class="mt-3">
+                                <span id="stat-total" class="text-3xl sm:text-4xl font-extrabold text-white">0</span>
+                                <span class="text-xs text-emerald-400 block mt-0.5">Verified Drop Boxes</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 flex flex-col justify-between">
+                            <div class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                                <span>Drive Deadline</span>
+                                <i class="fa-solid fa-calendar-day text-festive-red"></i>
+                            </div>
+                            <div class="mt-3">
+                                <span class="text-3xl sm:text-4xl font-extrabold text-white">Dec 14</span>
+                                <span class="text-xs text-festive-gold block mt-0.5">Indian Wells Valley Drive</span>
+                            </div>
+                        </div>
+
+                        <div class="col-span-2 bg-gradient-to-r from-festive-red to-festive-darkred rounded-2xl p-4 text-white flex items-center justify-between shadow-xl">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white font-bold shrink-0">
+                                    <i class="fa-solid fa-hand-holding-heart text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-sm">Age Coverage: 0 to 12 Years</p>
+                                    <p class="text-xs text-white/90">Highest Need: <span class="underline decoration-festive-gold font-bold">Ages 0–2</span> &amp; <span class="underline decoration-festive-gold font-bold">Ages 10–12 Females</span></p>
+                                </div>
+                            </div>
+                            <a href="#accepted-items" onclick="scrollToGuidelines()" class="text-xs bg-white text-festive-navy font-bold px-3 py-2 rounded-lg hover:bg-slate-100 transition whitespace-nowrap">
+                                Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search & Control Section -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-30">
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-4 sm:p-6 space-y-4">
+                
+                <!-- Donor Call Disclaimer Alert -->
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-center gap-3 text-amber-900 text-xs sm:text-sm font-medium">
+                    <i class="fa-solid fa-phone-volume text-amber-600 text-base shrink-0 animate-bounce"></i>
+                    <span><strong>Please Note:</strong> Business operating hours and box availability may vary. We strongly recommend <strong>calling the site ahead of time</strong> to confirm drop-off times before making your trip!</span>
+                </div>
+
+                <!-- Search Bar Row -->
+                <div class="flex flex-col md:flex-row gap-3 items-center">
+                    <div class="relative flex-grow w-full">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="search-input" oninput="applyFilters()" 
+                            placeholder="Search by business name, address, city, or zip code..." 
+                            class="w-full pl-11 pr-10 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-festive-red/50 focus:border-festive-red text-sm transition">
+                        <button id="clear-search" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
+                    <!-- View Toggle Buttons -->
+                    <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 w-full md:w-auto justify-center">
+                        <button id="btn-view-grid" onclick="setViewMode('grid')" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg bg-white text-slate-800 shadow-sm transition">
+                            <i class="fa-solid fa-grip-vertical text-festive-red"></i>
+                            <span>Cards</span>
+                        </button>
+                        <button id="btn-view-table" onclick="setViewMode('table')" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition">
+                            <i class="fa-solid fa-table-list"></i>
+                            <span>Table</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter Dropdowns Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2 border-t border-slate-100">
+                    <!-- City/Neighborhood Filter -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">City / Area</label>
+                        <select id="filter-city" onchange="applyFilters()" class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-festive-red/50">
+                            <option value="">All Cities</option>
+                        </select>
+                    </div>
+
+                    <!-- Category / Type Filter -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Location Type</label>
+                        <select id="filter-type" onchange="applyFilters()" class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-festive-red/50">
+                            <option value="">All Types</option>
+                            <option value="Retail">Retail & Shopping</option>
+                            <option value="Fire Station">Fire & Public Safety</option>
+                            <option value="Community Center">Community & Gyms</option>
+                            <option value="Corporate">Office & Corporate</option>
+                            <option value="Bank">Financial & Banks</option>
+                        </select>
+                    </div>
+
+                    <!-- Status Filter -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Availability</label>
+                        <select id="filter-status" onchange="applyFilters()" class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-festive-red/50">
+                            <option value="">Any Status</option>
+                            <option value="open">Open Today</option>
+                            <option value="weekend">Weekend Hours Available</option>
+                            <option value="drive-thru">Has Drive-Thru / Easy Access</option>
+                        </select>
+                    </div>
+
+                    <!-- Map Toggle Filter -->
+                    <div class="flex items-end">
+                        <button id="toggle-map-btn" onclick="toggleMapVisibility()" class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-sm font-semibold flex items-center justify-center gap-2 transition">
+                            <i class="fa-solid fa-map-location-dot text-indigo-600"></i>
+                            <span id="map-toggle-text">Hide Map View</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Workspace (Map + Content Grid) -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                <!-- Interactive Simulated Map Column -->
+                <div id="map-container-col" class="lg:col-span-5 space-y-4 transition-all duration-300">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sticky top-24">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-festive-red animate-pulse"></span>
+                                <h3 class="font-bold text-slate-800 text-base">Interactive City Map</h3>
+                            </div>
+                            <span class="text-xs text-slate-500 font-medium">Click pins to locate</span>
+                        </div>
+
+                        <!-- Simulated Interactive Map Visual Canvas -->
+                        <div class="relative w-full h-[460px] bg-slate-900 rounded-xl overflow-hidden border border-slate-800 shadow-inner group">
+                            <!-- Map Vector Grid Background -->
+                            <div class="absolute inset-0 bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
+                            
+                            <!-- Stylized Roads and Geographic lines -->
+                            <svg class="absolute inset-0 w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M-20 100 Q 150 120 300 280 T 600 450" fill="none" stroke="#64748b" stroke-width="8" />
+                                <path d="M100 -20 Q 200 200 450 300 T 500 600" fill="none" stroke="#475569" stroke-width="6" />
+                                <path d="M 0 350 L 500 150" fill="none" stroke="#334155" stroke-width="4" stroke-dasharray="6,6" />
+                                <!-- River Visual -->
+                                <path d="M-50 400 Q 200 300 500 380" fill="none" stroke="#0284c7" stroke-width="16" opacity="0.6" />
+                            </svg>
+
+                            <!-- Map Overlay Header -->
+                            <div class="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700 text-xs text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-compass text-festive-gold"></i>
+                                <span>Metro District Coverage</span>
+                            </div>
+
+                            <!-- Pins Container dynamically rendered -->
+                            <div id="map-pins-container" class="relative w-full h-full"></div>
+
+                            <!-- Selected Pin Info Overlay Card -->
+                            <div id="map-selected-card" class="absolute bottom-3 left-3 right-3 bg-slate-900/95 text-white backdrop-blur-md p-3.5 rounded-xl border border-slate-700 shadow-2xl transition-all transform translate-y-32 opacity-0">
+                                <div class="flex justify-between items-start gap-2">
+                                    <div>
+                                        <span id="map-card-badge" class="text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded bg-festive-red text-white inline-block mb-1">Retail</span>
+                                        <h4 id="map-card-title" class="font-bold text-sm text-white leading-tight">Location Title</h4>
+                                        <p id="map-card-address" class="text-xs text-slate-300 mt-1">Address goes here...</p>
+                                    </div>
+                                    <button onclick="hideMapCard()" class="text-slate-400 hover:text-white p-1">
+                                        <i class="fa-solid fa-xmark text-xs"></i>
+                                    </button>
+                                </div>
+                                <div class="mt-2.5 pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+                                    <span id="map-card-hours" class="text-emerald-400 font-medium">Open Today</span>
+                                    <button id="map-card-action" class="text-festive-gold font-semibold hover:underline flex items-center gap-1">
+                                        Focus Item <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Map Legend -->
+                        <div class="mt-3 flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+                            <span class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-festive-red"></span> Drop Off Site
+                            </span>
+                            <span class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-festive-gold"></span> High Volume Center
+                            </span>
+                            <span class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Selected Pin
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Locations Display Column -->
+                <div id="locations-container-col" class="lg:col-span-7 space-y-4">
+                    
+                    <!-- Search Results Counter & Active Filters Display -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-100/80 px-4 py-2.5 rounded-xl text-sm border border-slate-200">
+                        <div class="text-slate-600 font-medium">
+                            Showing <span id="results-count" class="font-bold text-slate-900">0</span> location(s)
+                        </div>
+                        <div id="active-filter-tags" class="flex flex-wrap gap-1.5"></div>
+                    </div>
+
+                    <!-- GRID VIEW MODE -->
+                    <div id="view-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Dynamic Location Cards injected here -->
+                    </div>
+
+                    <!-- TABLE VIEW MODE -->
+                    <div id="view-table" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="p-3 bg-amber-50/70 border-b border-amber-100 text-xs text-amber-800 flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+                            <span>Always call businesses beforehand to confirm current drop-off acceptance and lobby hours.</span>
+                        </div>
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left text-sm text-slate-700">
+                                <thead class="bg-slate-50 border-b border-slate-200 text-xs uppercase font-bold text-slate-500">
+                                    <tr>
+                                        <th scope="col" class="px-4 py-3.5">Location Name</th>
+                                        <th scope="col" class="px-4 py-3.5">Category</th>
+                                        <th scope="col" class="px-4 py-3.5">Address</th>
+                                        <th scope="col" class="px-4 py-3.5">Drop Box Location</th>
+                                        <th scope="col" class="px-4 py-3.5 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body" class="divide-y divide-slate-100">
+                                    <!-- Dynamic Rows Injected Here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Empty State View -->
+                    <div id="empty-state" class="hidden bg-white rounded-2xl border-2 border-dashed border-slate-200 p-12 text-center space-y-4">
+                        <div class="w-16 h-16 bg-red-50 text-festive-red rounded-full flex items-center justify-center mx-auto text-2xl">
+                            <i class="fa-solid fa-location-dot-slash"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800">No Drop Sites Found</h3>
+                            <p class="text-slate-500 text-sm max-w-sm mx-auto mt-1">We couldn't find any collection locations matching your search filters. Try broadening your criteria.</p>
+                        </div>
+                        <button onclick="resetFilters()" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition">
+                            <i class="fa-solid fa-rotate-right"></i> Reset All Filters
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Toy Donation Guidelines Accordion Section -->
+        <section id="accepted-items" class="bg-slate-100 py-12 border-t border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+                <div class="text-center max-w-2xl mx-auto">
+                    <span class="text-xs font-bold text-festive-red uppercase tracking-wider">Age Range &amp; Gift Guidelines</span>
+                    <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Serving Children Ages 0 to 12</h3>
+                    <p class="text-slate-600 text-sm mt-2">Help us ensure all children receive gifts this season. Pay special attention to our highest-need age brackets!</p>
+                </div>
+
+                <!-- Priority Needs Highlight Banner -->
+                <div class="bg-gradient-to-r from-amber-500 via-orange-500 to-festive-red rounded-2xl p-4 text-white shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-2xl shrink-0">
+                            <i class="fa-solid fa-bullhorn text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-black text-base uppercase tracking-wide">Most Needed Gift Categories</h4>
+                            <p class="text-xs text-white/90">
+                                <strong>Infants &amp; Toddlers (Ages 0–2):</strong> Baby gear, sensory toys, blocks &bull; 
+                                <strong>Pre-Teens (Ages 10–12 Females):</strong> Craft kits, toiletries/beauty gift sets, sports equipment, board games, headphones.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg font-bold mb-4">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-base mb-2">Great Toys to Donate</h4>
+                            <ul class="text-sm text-slate-600 space-y-2">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-festive-green mt-1"></i> Infant developmental toys &amp; blankets (0–2)</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-festive-green mt-1"></i> Pre-teen female gift sets &amp; crafts (10–12)</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-festive-green mt-1"></i> Board games &amp; puzzle sets</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-festive-green mt-1"></i> Sports balls &amp; outdoor activities</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-festive-green mt-1"></i> Books &amp; art kits</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg font-bold mb-4">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-base mb-2">Items Cannot Be Accepted</h4>
+                            <ul class="text-sm text-slate-600 space-y-2">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-xmark text-festive-red mt-1"></i> Used or opened toys</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-xmark text-festive-red mt-1"></i> Realistic toy weapons or guns</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-xmark text-festive-red mt-1"></i> Food or candy items</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-xmark text-festive-red mt-1"></i> Liquids or chemical items (slimes)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg font-bold mb-4">
+                                <i class="fa-solid fa-gift"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-base mb-2">Packaging Advice</h4>
+                            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                                Please leave all items <strong>unwrapped</strong>! Volunteers need to inspect and categorize toys by age and gender group before distribution.
+                            </p>
+                        </div>
+                        <div class="p-3 bg-indigo-50 rounded-xl border border-indigo-100 text-xs text-indigo-900">
+                            <i class="fa-solid fa-lightbulb text-indigo-600 mr-1"></i> <strong>Pro Tip:</strong> Batteries included with toys are extra appreciated!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal: Add Drop Site -->
+    <div id="add-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 p-4">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform scale-95 transition-all duration-300" id="add-modal-box">
+            <!-- Modal Header -->
+            <div class="bg-festive-navy text-white px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-festive-gold"></i>
+                    <h3 class="font-bold text-lg">Register Drop Off Location</h3>
+                </div>
+                <button onclick="closeAddModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Form Body -->
+            <form id="add-location-form" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Business / Location Name *</label>
+                    <input type="text" id="form-name" required placeholder="e.g. Target Downtown Store #1402" class="w-full p-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-festive-red/50 focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Category *</label>
+                        <select id="form-type" required class="w-full p-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-festive-red/50 focus:outline-none">
+                            <option value="Retail">Retail Store</option>
+                            <option value="Fire Station">Fire Station</option>
+                            <option value="Community Center">Community Center</option>
+                            <option value="Corporate">Corporate Office</option>
+                            <option value="Bank">Financial / Bank</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">City *</label>
+                        <input type="text" id="form-city" required placeholder="e.g. Chicago" class="w-full p-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-festive-red/50 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Full Address *</label>
+                    <input type="text" id="form-address" required placeholder="123 Main Street, Suite 100, Zip" class="w-full p-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-festive-red/50 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Specific Drop Box Spot *</label>
+                    <input type="text" id="form-box-spot" required placeholder="e.g. Inside main entrance next to customer service desk" class="w-full p-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-festive-red/50 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Operating Hours *</label>
+                    <input type="text" id="form-hours" required placeholder="e.g. Mon-Sat: 8am-9pm, Sun: 10am-6pm" class="w-full p-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-festive-red/50 focus:outline-none">
+                </div>
+
+                <div class="flex items-center gap-2 pt-2">
+                    <input type="checkbox" id="form-open-now" checked class="w-4 h-4 text-festive-red rounded border-slate-300 focus:ring-festive-red">
+                    <label for="form-open-now" class="text-sm font-medium text-slate-700">Currently active for toy drop-offs</label>
+                </div>
+
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-800">Cancel</button>
+                    <button type="submit" class="px-5 py-2.5 bg-festive-red hover:bg-festive-darkred text-white font-semibold text-sm rounded-xl shadow-md transition">Save Location</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Share Location -->
+    <div id="share-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-share-nodes text-indigo-600"></i> Share Drop Location
+                </h3>
+                <button onclick="closeShareModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p id="share-modal-title" class="text-sm text-slate-600 font-medium">Sharing location details...</p>
+            <div class="flex items-center gap-2">
+                <input type="text" id="share-link-input" readonly class="flex-grow p-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-600 font-mono focus:outline-none">
+                <button onclick="copyShareLink()" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-xl shadow transition">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-train text-festive-red text-xl"></i>
+                <p>© 2026 Toys for Tots Drop Site Community Locator. Unofficial web dashboard template.</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="https://www.toysfortots.org" target="_blank" rel="noopener" class="hover:text-white transition">Official Toys for Tots Org</a>
+                <a href="#accepted-items" onclick="scrollToGuidelines()" class="hover:text-white transition">Donation Rules</a>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-white transition flex items-center gap-1">
+                    Back to Top <i class="fa-solid fa-arrow-up text-[10px]"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application JavaScript Logic -->
+    <script>
+        // --- Sample Mock Data ---
+        const initialDropSites = [
+            {
+                id: 'loc-1',
+                name: "Ridgecrest Chamber of Commerce",
+                type: "Corporate",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "128 E California Ave, Ridgecrest, CA 93555",
+                boxSpot: "Main lobby next to visitor information desk",
+                hours: "Mon-Fri: 9:00 AM - 4:00 PM",
+                status: "open",
+                weekend: false,
+                driveThru: false,
+                mapCoords: { top: '45%', left: '48%' },
+                notes: "Official Indian Wells Valley collection hub."
+            },
+            {
+                id: 'loc-2',
+                name: "Fistful of Cards",
+                type: "Retail",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "901 S China Lake Blvd, Ridgecrest, CA 93555",
+                boxSpot: "Front lobby area next to game tables",
+                hours: "Tue-Thu: 4:00 PM - 8:00 PM, Fri: 4-9 PM, Sat: 1-6 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '55%', left: '42%' },
+                notes: "Drop off toys while checking out local tabletop and card games."
+            },
+            {
+                id: 'loc-3',
+                name: "Walmart Supercenter",
+                type: "Retail",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "201 E Bowman Rd, Ridgecrest, CA 93555",
+                boxSpot: "Customer service area near main entrance",
+                hours: "Mon-Sun: 6:00 AM - 11:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '75%', left: '52%' },
+                notes: "High volume collection bin."
+            },
+            {
+                id: 'loc-4',
+                name: "Desert Brew Coffee Shop",
+                type: "Retail",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "208 N Balsam St, Ridgecrest, CA 93555",
+                boxSpot: "Main counter seating area",
+                hours: "Tue-Fri: 8:00 AM - 12:00 PM, Sat: 8:00 AM - 1:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '42%', left: '44%' },
+                notes: "Drop off a new unwrapped toy during morning coffee runs."
+            },
+            {
+                id: 'loc-5',
+                name: "The Fit Lyfe",
+                type: "Community Center",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "139 W Ridgecrest Blvd Ste B, Ridgecrest, CA 93555",
+                boxSpot: "Front reception desk lobby",
+                hours: "Mon-Fri: 6:00 AM - 7:00 PM, Sat: 8:00 AM - 12:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '48%', left: '40%' },
+                notes: "Fitness studio collection point."
+            },
+            {
+                id: 'loc-6',
+                name: "State Farm Insurance - Gary Charlon",
+                type: "Bank",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "995 N Norma St Ste A, Ridgecrest, CA 93555",
+                boxSpot: "Front lobby receptionist desk",
+                hours: "Mon-Fri: 9:00 AM - 5:00 PM",
+                status: "open",
+                weekend: false,
+                driveThru: false,
+                mapCoords: { top: '30%', left: '38%' },
+                notes: "Community insurance office collection site."
+            },
+            {
+                id: 'loc-7',
+                name: "Compassionate Couch",
+                type: "Community Center",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "Ridgecrest, CA 93555",
+                boxSpot: "Main office reception entrance",
+                hours: "Mon-Fri: 9:00 AM - 5:00 PM",
+                status: "open",
+                weekend: false,
+                driveThru: false,
+                mapCoords: { top: '50%', left: '50%' },
+                notes: "Community wellness and therapy drop site."
+            },
+            {
+                id: 'loc-8',
+                name: "Wendy's",
+                type: "Retail",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "830 N China Lake Blvd, Ridgecrest, CA 93555",
+                boxSpot: "Dining room main entrance foyer",
+                hours: "Mon-Sun: 6:30 AM - 12:00 AM",
+                status: "open",
+                weekend: true,
+                driveThru: true,
+                mapCoords: { top: '32%', left: '45%' },
+                notes: "Convenient drive-thru access and long hours."
+            },
+            {
+                id: 'loc-9',
+                name: "The Howl'n Coyote Bar and Grill",
+                type: "Retail",
+                city: "Inyokern",
+                zip: "93527",
+                address: "6500 Highway 178, Inyokern, CA 93527",
+                boxSpot: "Inside dining entrance area",
+                hours: "Mon-Sun: 11:00 AM - 9:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '40%', left: '20%' },
+                notes: "Inyokern collection hub."
+            },
+            {
+                id: 'loc-10',
+                name: "China Lake Museum",
+                type: "Community Center",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "100 E Las Flores Ave, Ridgecrest, CA 93555",
+                boxSpot: "Gift shop entrance desk",
+                hours: "Tue-Sat: 10:00 AM - 4:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '35%', left: '55%' },
+                notes: "Great location when visiting historical exhibits."
+            },
+            {
+                id: 'loc-11',
+                name: "Desert Empire Fairgrounds",
+                type: "Community Center",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "520 S Richmond Rd, Ridgecrest, CA 93555",
+                boxSpot: "Main Fair Office lobby",
+                hours: "Mon-Fri: 8:00 AM - 5:00 PM",
+                status: "open",
+                weekend: false,
+                driveThru: true,
+                mapCoords: { top: '65%', left: '50%' },
+                notes: "Easy pull-up access in front of the main administration building."
+            },
+            {
+                id: 'loc-12',
+                name: "Trona Senior Center",
+                type: "Community Center",
+                city: "Trona",
+                zip: "93562",
+                address: "13187 Market St, Trona, CA 93562",
+                boxSpot: "Main multipurpose room lobby",
+                hours: "Mon-Fri: 9:00 AM - 2:00 PM",
+                status: "open",
+                weekend: false,
+                driveThru: false,
+                mapCoords: { top: '25%', left: '85%' },
+                notes: "Serving Trona and Searles Valley community donations."
+            },
+            {
+                id: 'loc-13',
+                name: "American Legion Post 684",
+                type: "Community Center",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "641 W Inyokern Rd, Ridgecrest, CA 93555",
+                boxSpot: "Main hall entrance foyer",
+                hours: "Mon-Sun: 12:00 PM - 8:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '22%', left: '32%' },
+                notes: "Veterans organization active collection hub."
+            },
+            {
+                id: 'loc-14',
+                name: "Albertsons (S. Norma St.)",
+                type: "Retail",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "920 S Norma St, Ridgecrest, CA 93555",
+                boxSpot: "Customer Service desk inside front doors",
+                hours: "Mon-Sun: 6:00 AM - 10:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '58%', left: '36%' },
+                notes: "High traffic grocery drop site."
+            },
+            {
+                id: 'loc-15',
+                name: "Anna's Hair Design",
+                type: "Retail",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "801 S China Lake Blvd, Ridgecrest, CA 93555",
+                boxSpot: "Reception waiting lounge",
+                hours: "Tue-Fri: 9:00 AM - 5:00 PM, Sat: 9:00 AM - 3:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '52%', left: '44%' },
+                notes: "Salon donation station."
+            },
+            {
+                id: 'loc-16',
+                name: "Desert Valleys Federal Credit Union",
+                type: "Bank",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "100 E Ward Ave, Ridgecrest, CA 93555",
+                boxSpot: "Main banking teller lobby",
+                hours: "Mon-Thu: 9:00 AM - 5:00 PM, Fri: 9:00 AM - 5:30 PM",
+                status: "open",
+                weekend: false,
+                driveThru: true,
+                mapCoords: { top: '40%', left: '46%' },
+                notes: "Credit union member and public drop location."
+            },
+            {
+                id: 'loc-17',
+                name: "Just for Fun Dog Agility Playground",
+                type: "Community Center",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "Ridgecrest, CA 93555",
+                boxSpot: "Main office / check-in kiosk",
+                hours: "Wed-Sun: 8:00 AM - 5:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '70%', left: '30%' },
+                notes: "Drop off toys while training your dog!"
+            },
+            {
+                id: 'loc-18',
+                name: "Maturango Museum",
+                type: "Community Center",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "100 E Las Flores Ave, Ridgecrest, CA 93555",
+                boxSpot: "Gift store and main entrance lobby",
+                hours: "Mon-Sat: 10:00 AM - 5:00 PM, Sun: 12:00 PM - 4:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '37%', left: '56%' },
+                notes: "Local museum & gift shop collection point."
+            },
+            {
+                id: 'loc-19',
+                name: "Patriot Bar",
+                type: "Retail",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "201 W Inyokern Rd, Ridgecrest, CA 93555",
+                boxSpot: "Front entrance display area",
+                hours: "Mon-Sun: 11:00 AM - 11:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '24%', left: '38%' },
+                notes: "Evening and weekend drop-off location."
+            },
+            {
+                id: 'loc-20',
+                name: "Quinn's Hobbies",
+                type: "Retail",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "229 S China Lake Blvd, Ridgecrest, CA 93555",
+                boxSpot: "Main counter and hobby shop entrance",
+                hours: "Tue-Sat: 10:00 AM - 6:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '44%', left: '43%' },
+                notes: "Local hobby store toy box."
+            },
+            {
+                id: 'loc-21',
+                name: "Schu-Fu Martial Arts Dojo #119",
+                type: "Community Center",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "301 S China Lake Blvd, Ridgecrest, CA 93555",
+                boxSpot: "Dojo lobby and parent viewing area",
+                hours: "Mon-Fri: 3:30 PM - 8:00 PM, Sat: 9:00 AM - 12:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '46%', left: '42%' },
+                notes: "Martial arts academy donation spot."
+            },
+            {
+                id: 'loc-22',
+                name: "TEYA Enterprises",
+                type: "Corporate",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "139 W Ridgecrest Blvd, Ridgecrest, CA 93555",
+                boxSpot: "Front reception desk",
+                hours: "Mon-Fri: 8:00 AM - 4:30 PM",
+                status: "open",
+                weekend: false,
+                driveThru: false,
+                mapCoords: { top: '47%', left: '39%' },
+                notes: "Defense contractor office drop site."
+            },
+            {
+                id: 'loc-23',
+                name: "The Moose - China Lake Lodge 258",
+                type: "Community Center",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "6737 Inyokern Rd, Ridgecrest, CA 93555",
+                boxSpot: "Lodge main social hall entry",
+                hours: "Mon-Sun: 2:00 PM - 9:00 PM",
+                status: "open",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: '20%', left: '26%' },
+                notes: "Loyal Order of Moose Lodge collection site."
+            },
+            {
+                id: 'loc-24',
+                name: "Top Shelf Aesthetics",
+                type: "Retail",
+                city: "Ridgecrest",
+                zip: "93555",
+                address: "121 W Ridgecrest Blvd, Ridgecrest, CA 93555",
+                boxSpot: "Front lobby area",
+                hours: "Mon-Fri: 9:00 AM - 5:00 PM",
+                status: "open",
+                weekend: false,
+                driveThru: false,
+                mapCoords: { top: '49%', left: '41%' },
+                notes: "Aesthetics clinic drop box."
+            }
+        ];
+
+        // State Management
+        let locations = [...initialDropSites];
+        let currentView = 'grid'; // 'grid' or 'table'
+        let selectedMapPinId = null;
+        let isMapVisible = true;
+
+        // --- Initialization ---
+        window.addEventListener('DOMContentLoaded', () => {
+            populateCityFilter();
+            renderLocations();
+            renderMapPins();
+            updateStats();
+        });
+
+        // --- Stats & Utility Logic ---
+        function updateStats() {
+            document.getElementById('stat-total').innerText = locations.length;
+        }
+
+        function populateCityFilter() {
+            const citySelect = document.getElementById('filter-city');
+            const cities = [...new Set(locations.map(loc => loc.city))].sort();
+            
+            citySelect.innerHTML = '<option value="">All Cities</option>';
+            cities.forEach(city => {
+                const opt = document.createElement('option');
+                opt.value = city;
+                opt.textContent = city;
+                citySelect.appendChild(opt);
+            });
+        }
+
+        // --- Filtering Engine ---
+        function getFilteredLocations() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const cityFilter = document.getElementById('filter-city').value;
+            const typeFilter = document.getElementById('filter-type').value;
+            const statusFilter = document.getElementById('filter-status').value;
+
+            // Toggle clear search button
+            document.getElementById('clear-search').classList.toggle('hidden', query === '');
+
+            return locations.filter(loc => {
+                // Search query match
+                const matchQuery = !query || 
+                    loc.name.toLowerCase().includes(query) ||
+                    loc.address.toLowerCase().includes(query) ||
+                    loc.city.toLowerCase().includes(query) ||
+                    loc.zip.toLowerCase().includes(query) ||
+                    loc.boxSpot.toLowerCase().includes(query);
+
+                // City match
+                const matchCity = !cityFilter || loc.city === cityFilter;
+
+                // Category type match
+                const matchType = !typeFilter || loc.type === typeFilter;
+
+                // Status match
+                let matchStatus = true;
+                if (statusFilter === 'open') matchStatus = loc.status === 'open';
+                if (statusFilter === 'weekend') matchStatus = loc.weekend === true;
+                if (statusFilter === 'drive-thru') matchStatus = loc.driveThru === true;
+
+                return matchQuery && matchCity && matchType && matchStatus;
+            });
+        }
+
+        function applyFilters() {
+            renderLocations();
+            renderMapPins();
+            renderActiveFilterBadges();
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            applyFilters();
+        }
+
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('filter-city').value = '';
+            document.getElementById('filter-type').value = '';
+            document.getElementById('filter-status').value = '';
+            applyFilters();
+        }
+
+        function renderActiveFilterBadges() {
+            const container = document.getElementById('active-filter-tags');
+            container.innerHTML = '';
+
+            const city = document.getElementById('filter-city').value;
+            const type = document.getElementById('filter-type').value;
+            const status = document.getElementById('filter-status').value;
+
+            const addTag = (text, removeFn) => {
+                const tag = document.createElement('span');
+                tag.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-200 text-slate-700 text-xs font-semibold';
+                tag.innerHTML = `${text} <button onclick="${removeFn}" class="hover:text-festive-red"><i class="fa-solid fa-xmark"></i></button>`;
+                container.appendChild(tag);
+            };
+
+            if (city) addTag(`City: ${city}`, "document.getElementById('filter-city').value=''; applyFilters();");
+            if (type) addTag(`Type: ${type}`, "document.getElementById('filter-type').value=''; applyFilters();");
+            if (status) addTag(`Filter: ${status}`, "document.getElementById('filter-status').value=''; applyFilters();");
+        }
+
+        // --- Render Functions ---
+        function renderLocations() {
+            const filtered = getFilteredLocations();
+            document.getElementById('results-count').innerText = filtered.length;
+
+            const gridContainer = document.getElementById('view-grid');
+            const tableBody = document.getElementById('table-body');
+            const emptyState = document.getElementById('empty-state');
+
+            if (filtered.length === 0) {
+                gridContainer.classList.add('hidden');
+                document.getElementById('view-table').classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            if (currentView === 'grid') {
+                gridContainer.classList.remove('hidden');
+                document.getElementById('view-table').classList.add('hidden');
+                renderGridCards(filtered);
+            } else {
+                gridContainer.classList.add('hidden');
+                document.getElementById('view-table').classList.remove('hidden');
+                renderTableRows(filtered);
+            }
+        }
+
+        function renderGridCards(items) {
+            const container = document.getElementById('view-grid');
+            container.innerHTML = items.map(loc => `
+                <div id="card-${loc.id}" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md border border-slate-200/90 flex flex-col justify-between transition-all duration-200 relative group ${selectedMapPinId === loc.id ? 'ring-2 ring-festive-red bg-red-50/20' : ''}">
+                    <div>
+                        <!-- Header badge row -->
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-bold ${getTypeBadgeStyle(loc.type)}">
+                                ${getTypeIcon(loc.type)} ${loc.type}
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                                Drop Box Open
+                            </span>
+                        </div>
+
+                        <!-- Location Title -->
+                        <h4 class="text-lg font-bold text-slate-900 group-hover:text-festive-red transition-colors leading-snug">
+                            ${loc.name}
+                        </h4>
+                        
+                        <!-- Address -->
+                        <p class="text-xs text-slate-500 mt-1 flex items-start gap-1.5">
+                            <i class="fa-solid fa-location-dot text-festive-red mt-0.5"></i>
+                            <span>${loc.address}</span>
+                        </p>
+
+                        <!-- Box Location Info Box -->
+                        <div class="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-700 space-y-1.5">
+                            <div class="flex items-start gap-2">
+                                <i class="fa-solid fa-box text-festive-gold text-sm mt-0.5"></i>
+                                <div>
+                                    <span class="font-bold text-slate-900">Box Spot:</span> ${loc.boxSpot}
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 pt-1 border-t border-slate-200/60 text-slate-500">
+                                <i class="fa-regular fa-clock text-slate-400"></i>
+                                <span>${loc.hours}</span>
+                            </div>
+                        </div>
+
+                        <!-- Call Disclaimer Badge -->
+                        <div class="mt-2.5 px-2.5 py-1.5 bg-amber-50 rounded-lg border border-amber-200/60 text-[11px] text-amber-800 flex items-center gap-1.5 font-medium">
+                            <i class="fa-solid fa-phone text-amber-600"></i>
+                            <span>Call ahead before drop-off to confirm hours.</span>
+                        </div>
+
+                        ${loc.notes ? `
+                            <p class="text-xs text-slate-500 mt-2.5 italic">
+                                <i class="fa-solid fa-circle-info text-indigo-400 mr-1"></i> ${loc.notes}
+                            </p>
+                        ` : ''}
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc.name + ' ' + loc.address)}" 
+                           target="_blank" rel="noopener" 
+                           class="flex-1 inline-flex items-center justify-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-2.5 px-3 rounded-xl transition shadow-sm">
+                            <i class="fa-solid fa-diamond-turn-right text-festive-gold"></i> Directions
+                        </a>
+
+                        <button onclick="copyAddress('${escapeJsString(loc.address)}')" title="Copy Address" class="p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs transition">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+
+                        <button onclick="openShareModal('${loc.id}', '${escapeJsString(loc.name)}')" title="Share Location" class="p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs transition">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTableRows(items) {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = items.map(loc => `
+                <tr class="hover:bg-slate-50/80 transition ${selectedMapPinId === loc.id ? 'bg-red-50/30' : ''}">
+                    <td class="px-4 py-3.5 font-bold text-slate-900">
+                        ${loc.name}
+                        <div class="text-xs text-slate-400 font-normal mt-0.5">${loc.hours}</div>
+                    </td>
+                    <td class="px-4 py-3.5">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-bold ${getTypeBadgeStyle(loc.type)}">
+                            ${loc.type}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3.5 text-xs text-slate-600">${loc.address}</td>
+                    <td class="px-4 py-3.5 text-xs text-slate-700 font-medium">
+                        <i class="fa-solid fa-box text-festive-gold mr-1"></i> ${loc.boxSpot}
+                    </td>
+                    <td class="px-4 py-3.5 text-right space-x-1">
+                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc.name + ' ' + loc.address)}" target="_blank" class="inline-block p-2 text-slate-600 hover:text-festive-red" title="Map">
+                            <i class="fa-solid fa-diamond-turn-right"></i>
+                        </a>
+                        <button onclick="copyAddress('${escapeJsString(loc.address)}')" class="p-2 text-slate-600 hover:text-indigo-600" title="Copy Address">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                        <button onclick="openShareModal('${loc.id}', '${escapeJsString(loc.name)}')" class="p-2 text-slate-600 hover:text-indigo-600" title="Share">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // --- Simulated Interactive Map Pins ---
+        function renderMapPins() {
+            const container = document.getElementById('map-pins-container');
+            const filtered = getFilteredLocations();
+
+            container.innerHTML = filtered.map((loc, idx) => {
+                const isSelected = selectedMapPinId === loc.id;
+                return `
+                    <div style="top: ${loc.mapCoords?.top || (20 + (idx * 10) % 70) + '%'}; left: ${loc.mapCoords?.left || (15 + (idx * 12) % 75) + '%'};"
+                         onclick="selectMapPin('${loc.id}')"
+                         class="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-20">
+                        <!-- Pin Visual Button -->
+                        <div class="relative flex items-center justify-center">
+                            ${isSelected ? '<span class="absolute w-10 h-10 rounded-full bg-emerald-500/30 animate-ping"></span>' : ''}
+                            <div class="w-8 h-8 rounded-full ${isSelected ? 'bg-emerald-500 text-white scale-125' : 'bg-festive-red text-white group-hover:bg-festive-darkred'} shadow-lg flex items-center justify-center font-bold text-xs border-2 border-white transition-all transform group-hover:scale-110">
+                                <i class="fa-solid ${loc.type === 'Fire Station' ? 'fa-fire-extinguisher' : 'fa-gift'}"></i>
+                            </div>
+                        </div>
+                        <!-- Tooltip Label on Hover -->
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded whitespace-nowrap shadow-xl z-30">
+                            ${loc.name}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectMapPin(id) {
+            selectedMapPinId = id;
+            const loc = locations.find(l => l.id === id);
+            if (!loc) return;
+
+            // Update Map Info Card Popup
+            const card = document.getElementById('map-selected-card');
+            document.getElementById('map-card-badge').innerText = loc.type;
+            document.getElementById('map-card-title').innerText = loc.name;
+            document.getElementById('map-card-address').innerText = loc.address;
+            document.getElementById('map-card-hours').innerText = loc.hours;
+            
+            const actionBtn = document.getElementById('map-card-action');
+            actionBtn.onclick = () => focusLocationCard(id);
+
+            card.classList.remove('translate-y-32', 'opacity-0');
+            
+            // Re-render map pins & grid highlight
+            renderMapPins();
+            renderLocations();
+        }
+
+        function hideMapCard() {
+            selectedMapPinId = null;
+            document.getElementById('map-selected-card').classList.add('translate-y-32', 'opacity-0');
+            renderMapPins();
+            renderLocations();
+        }
+
+        function focusLocationCard(id) {
+            const cardElem = document.getElementById(`card-${id}`);
+            if (cardElem) {
+                cardElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // --- Helpers & UI Controls ---
+        function setViewMode(mode) {
+            currentView = mode;
+            const btnGrid = document.getElementById('btn-view-grid');
+            const btnTable = document.getElementById('btn-view-table');
+
+            if (mode === 'grid') {
+                btnGrid.className = "flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg bg-white text-slate-800 shadow-sm transition";
+                btnTable.className = "flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition";
+            } else {
+                btnTable.className = "flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg bg-white text-slate-800 shadow-sm transition";
+                btnGrid.className = "flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition";
+            }
+
+            renderLocations();
+        }
+
+        function toggleMapVisibility() {
+            isMapVisible = !isMapVisible;
+            const mapCol = document.getElementById('map-container-col');
+            const locCol = document.getElementById('locations-container-col');
+            const btnText = document.getElementById('map-toggle-text');
+
+            if (isMapVisible) {
+                mapCol.classList.remove('hidden');
+                locCol.className = "lg:col-span-7 space-y-4";
+                btnText.innerText = "Hide Map View";
+            } else {
+                mapCol.classList.add('hidden');
+                locCol.className = "lg:col-span-12 space-y-4";
+                btnText.innerText = "Show Map View";
+            }
+        }
+
+        function getTypeIcon(type) {
+            switch (type) {
+                case 'Retail': return '<i class="fa-solid fa-store"></i>';
+                case 'Fire Station': return '<i class="fa-solid fa-fire-extinguisher"></i>';
+                case 'Community Center': return '<i class="fa-solid fa-users"></i>';
+                case 'Corporate': return '<i class="fa-solid fa-building"></i>';
+                case 'Bank': return '<i class="fa-solid fa-landmark"></i>';
+                default: return '<i class="fa-solid fa-location-dot"></i>';
+            }
+        }
+
+        function getTypeBadgeStyle(type) {
+            switch (type) {
+                case 'Retail': return 'bg-blue-100 text-blue-800 border border-blue-200';
+                case 'Fire Station': return 'bg-red-100 text-red-800 border border-red-200';
+                case 'Community Center': return 'bg-emerald-100 text-emerald-800 border border-emerald-200';
+                case 'Corporate': return 'bg-purple-100 text-purple-800 border border-purple-200';
+                case 'Bank': return 'bg-amber-100 text-amber-800 border border-amber-200';
+                default: return 'bg-slate-100 text-slate-800';
+            }
+        }
+
+        function escapeJsString(str) {
+            return str.replace(/'/g, "\\'");
+        }
+
+        // --- Clipboard & Toast Logic ---
+        function copyAddress(address) {
+            const input = document.createElement('input');
+            input.value = address;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            showToast("Address copied to clipboard!", "fa-copy");
+        }
+
+        function showToast(message, iconClass = "fa-circle-check") {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.innerText = message;
+            toastIcon.className = `fa-solid ${iconClass} text-emerald-400 text-lg`;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function scrollToGuidelines() {
+            document.getElementById('accepted-items').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- Share Modal Logic ---
+        function openShareModal(id, name) {
+            const shareModal = document.getElementById('share-modal');
+            document.getElementById('share-modal-title').innerText = `Share drop site: ${name}`;
+            document.getElementById('share-link-input').value = `${window.location.origin}${window.location.pathname}?drop_id=${id}`;
+            
+            shareModal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeShareModal() {
+            document.getElementById('share-modal').classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function copyShareLink() {
+            const linkInput = document.getElementById('share-link-input');
+            linkInput.select();
+            document.execCommand('copy');
+            closeShareModal();
+            showToast("Shareable link copied to clipboard!", "fa-share-nodes");
+        }
+
+        // --- Add New Location Modal Logic ---
+        function openAddModal() {
+            const modal = document.getElementById('add-modal');
+            const modalBox = document.getElementById('add-modal-box');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalBox.classList.remove('scale-95');
+        }
+
+        function closeAddModal() {
+            const modal = document.getElementById('add-modal');
+            const modalBox = document.getElementById('add-modal-box');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalBox.classList.add('scale-95');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const newLoc = {
+                id: 'loc-' + (locations.length + 1),
+                name: document.getElementById('form-name').value,
+                type: document.getElementById('form-type').value,
+                city: document.getElementById('form-city').value,
+                zip: "Local Area",
+                address: document.getElementById('form-address').value,
+                boxSpot: document.getElementById('form-box-spot').value,
+                hours: document.getElementById('form-hours').value,
+                status: document.getElementById('form-open-now').checked ? "open" : "closed",
+                weekend: true,
+                driveThru: false,
+                mapCoords: { top: `${Math.floor(Math.random() * 60 + 20)}%`, left: `${Math.floor(Math.random() * 60 + 20)}%` },
+                notes: "Newly registered location."
+            };
+
+            locations.unshift(newLoc);
+            populateCityFilter();
+            renderLocations();
+            renderMapPins();
+            updateStats();
+            closeAddModal();
+            document.getElementById('add-location-form').reset();
+            showToast("New Drop Site added successfully!", "fa-square-plus");
+        }
+
+        // --- Data Export Functions ---
+        function exportData(format) {
+            let dataStr = "";
+            let fileName = `toys-for-tots-dropsites.${format}`;
+
+            if (format === 'json') {
+                dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(locations, null, 2));
+            } else if (format === 'csv') {
+                const headers = ["Name", "Type", "City", "Zip", "Address", "BoxSpot", "Hours"];
+                const rows = locations.map(l => [
+                    `"${l.name}"`,
+                    `"${l.type}"`,
+                    `"${l.city}"`,
+                    `"${l.zip}"`,
+                    `"${l.address}"`,
+                    `"${l.boxSpot}"`,
+                    `"${l.hours}"`
+                ]);
+                const csvContent = [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+                dataStr = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
+            }
+
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", fileName);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+
+            showToast(`Exported ${locations.length} locations as ${format.toUpperCase()}`);
+        }
+    </script>
+</body>
+</html>
