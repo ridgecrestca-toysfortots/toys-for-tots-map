@@ -132,7 +132,7 @@
                 </div>
                 <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
                     <span class="text-slate-400">Total Sites</span>
-                    <span class="font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40" id="totalSitesCount">24 Active</span>
+                    <span class="font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40" id="totalSitesCount">23 Active</span>
                 </div>
             </div>
         </div>
@@ -270,30 +270,29 @@
     <!-- JavaScript App Logic -->
     <script>
         const initialDropSites = [
-            { id: 1, name: "American Legion Post 684", city: "Ridgecrest", address: "641 W Inyokern Rd", hours: "Mon–Sat: 12:00 PM – 9:00 PM", phone: "(760) 446-0150", category: "Community & Faith", lat: 35.6312, lng: -117.6745 },
-            { id: 2, name: "Anna's Hair Design", city: "Ridgecrest", address: "209 W Ridgecrest Blvd", hours: "Tue–Sat: 9:00 AM – 5:00 PM", phone: "(760) 375-1212", category: "Services & Fitness", lat: 35.6231, lng: -117.6702 },
-            { id: 3, name: "China Lake Museum", city: "Ridgecrest", address: "130 E Las Flores Ave", hours: "Tue–Sat: 10:00 AM – 4:00 PM", phone: "(760) 375-6900", category: "Community & Faith", lat: 35.6358, lng: -117.6620 },
-            { id: 4, name: "Compassionate Couch", city: "Ridgecrest", address: "230 W Ridgecrest Blvd", hours: "Mon–Fri: 10:00 AM – 6:00 PM", phone: "(760) 375-3500", category: "Services & Fitness", lat: 35.6232, lng: -117.6715 },
+            { id: 1, name: "American Legion Post 684", city: "Ridgecrest", address: "641 W Inyokern Rd", hours: "Call post directly to confirm daily bar hours", phone: "(760) 446-6684", category: "Community & Faith", lat: 35.6312, lng: -117.6745 },
+            { id: 2, name: "Anna's Hair Design", city: "Ridgecrest", address: "701-705 N China Lake Blvd", hours: "Mon–Fri: 9:00 AM – 6:00 PM, Sat: 9:00 AM – 5:00 PM, Sun: Closed", phone: "(760) 371-3900", category: "Services & Fitness", lat: 35.6331, lng: -117.6640 },
+            { id: 3, name: "China Lake Museum", city: "Ridgecrest", address: "130 E Las Flores Ave", hours: "Tue–Sat: 10:00 AM – 4:00 PM", phone: "(760) 677-2866", category: "Community & Faith", lat: 35.6358, lng: -117.6620 },
+            { id: 4, name: "Compassionate Couch", city: "Ridgecrest", address: "815 N. Downs St., Ste B", hours: "Mon–Fri: 10:00 AM – 6:00 PM", phone: "(760) 371-5393", category: "Services & Fitness", lat: 35.6345, lng: -117.6742 },
             { id: 5, name: "Desert Empire Fairgrounds", city: "Ridgecrest", address: "520 S Richmond Rd", hours: "Mon–Fri: 8:00 AM – 4:30 PM", phone: "(760) 375-8000", category: "Community & Faith", lat: 35.6145, lng: -117.6530 },
             { id: 6, name: "Desert Valleys Federal Credit Union", city: "Ridgecrest", address: "100 E Ward Ave", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(760) 446-3500", category: "Services & Fitness", lat: 35.6190, lng: -117.6635 },
-            { id: 7, name: "Fistful of Cards", city: "Ridgecrest", address: "204 S China Lake Blvd", hours: "Mon–Sat: 10:00 AM – 7:00 PM", phone: "(760) 446-4263", category: "Entertainment & Hobbies", lat: 35.6210, lng: -117.6640 },
-            { id: 8, name: "Gateway Hardware", city: "Ridgecrest", address: "632 S China Lake Blvd", hours: "Mon–Sat: 8:00 AM – 6:00 PM", phone: "(760) 375-1521", category: "Retail & Shopping", lat: 35.6152, lng: -117.6640 },
-            { id: 9, name: "Howl'n Coyote Bar and Grill", city: "Inyokern", address: "1353 Brown Rd", hours: "Wed–Sun: 11:00 AM – 9:00 PM", phone: "(760) 377-5000", category: "Dining & Cafe", lat: 35.6380, lng: -117.8020 },
-            { id: 10, name: "Just for Fun Dog Agility Playground", city: "Ridgecrest", address: "800 S Richmond Rd", hours: "Daily: Sunrise – Sunset", phone: "(760) 382-7890", category: "Services & Fitness", lat: 35.6102, lng: -117.6530 },
+            { id: 7, name: "Fistful of Cards", city: "Ridgecrest", address: "901 S China Lake Blvd", hours: "Mon–Sat: 10:00 AM – 7:00 PM", phone: "(442) 966-9891", category: "Entertainment & Hobbies", lat: 35.6115, lng: -117.6640 },
+            { id: 8, name: "Gateway Hardware", city: "Inyokern", address: "6259 CA-178", hours: "Mon–Sat: 8:00 AM – 5:00 PM", phone: "(760) 377-4571", category: "Retail & Shopping", lat: 35.6471, lng: -117.8105 },
+            { id: 9, name: "Howl'n Coyote Bar and Grill", city: "Inyokern", address: "6537 W Inyokern Rd", hours: "Wed–Sun: 11:00 AM – 9:00 PM", phone: "(760) 377-4814", category: "Dining & Cafe", lat: 35.6475, lng: -117.8136 },
+            { id: 10, name: "Just for Fun Dog Agility Playground", city: "Ridgecrest", address: "831 E Burns Ave", hours: "Tue: 6:00 PM – 8:00 PM, Fri: 8:00 AM – 9:00 AM", phone: "", category: "Services & Fitness", lat: 35.6295, lng: -117.6515 },
             { id: 11, name: "Maturango Museum, Inc.", city: "Ridgecrest", address: "100 E Las Flores Ave", hours: "Mon–Sat: 10:00 AM – 5:00 PM", phone: "(760) 375-6900", category: "Community & Faith", lat: 35.6360, lng: -117.6630 },
-            { id: 12, name: "Navy Federal Credit Union", city: "Ridgecrest", address: "111 Grove St", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(888) 842-6328", category: "Services & Fitness", lat: 35.6280, lng: -117.6680 },
-            { id: 13, name: "Patriot Bar & Grill", city: "Ridgecrest", address: "200 W Inyokern Rd", hours: "Tue–Sun: 11:00 AM – 10:00 PM", phone: "(760) 446-2270", category: "Dining & Cafe", lat: 35.6310, lng: -117.6710 },
-            { id: 14, name: "Quinn's Hobbies", city: "Ridgecrest", address: "237 W Ridgecrest Blvd", hours: "Mon–Sat: 10:00 AM – 6:00 PM", phone: "(760) 375-2741", category: "Entertainment & Hobbies", lat: 35.6231, lng: -117.6719 },
-            { id: 15, name: "Ridgecrest Presbyterian Church", city: "Ridgecrest", address: "630 S Las Flores Ave", hours: "Mon–Thu: 9:00 AM – 2:00 PM", phone: "(760) 375-7161", category: "Community & Faith", lat: 35.6150, lng: -117.6610 },
-            { id: 16, name: "Ridgecrest Chamber of Commerce", city: "Ridgecrest", address: "128 E California Ave", hours: "Mon–Fri: 9:00 AM – 4:00 PM", phone: "(760) 375-8572", category: "Community & Faith", lat: 35.6220, lng: -117.6660 },
-            { id: 17, name: "Ridgecrest Cinemas", city: "Ridgecrest", address: "1631 N China Lake Blvd", hours: "Daily: 1:00 PM – 9:30 PM", phone: "(760) 371-1000", category: "Entertainment & Hobbies", lat: 35.6450, lng: -117.6640 },
-            { id: 18, name: "Schu-Fu Martial Arts Dojo #119", city: "Ridgecrest", address: "113 S China Lake Blvd", hours: "Mon–Fri: 3:00 PM – 8:00 PM", phone: "(760) 371-1119", category: "Services & Fitness", lat: 35.6215, lng: -117.6640 },
-            { id: 19, name: "Studio 760", city: "Ridgecrest", address: "231 W Ridgecrest Blvd", hours: "Tue–Sat: 9:00 AM – 6:00 PM", phone: "(760) 375-7760", category: "Services & Fitness", lat: 35.6231, lng: -117.6716 },
-            { id: 20, name: "TEYA Enterprises", city: "Ridgecrest", address: "139 S China Lake Blvd", hours: "Mon–Fri: 8:00 AM – 5:00 PM", phone: "(760) 375-4000", category: "Services & Fitness", lat: 35.6205, lng: -117.6640 },
-            { id: 21, name: "The Moose - China Lake Lodge 258", city: "Ridgecrest", address: "679 S Norma St", hours: "Daily: 1:00 PM – 9:00 PM", phone: "(760) 375-7151", category: "Community & Faith", lat: 35.6140, lng: -117.6690 },
-            { id: 22, name: "Top Shelf Aesthetics", city: "Ridgecrest", address: "121 S China Lake Blvd", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(760) 375-7430", category: "Services & Fitness", lat: 35.6218, lng: -117.6640 },
-            { id: 23, name: "Walmart Supercenter", city: "Ridgecrest", address: "201 E China Lake Blvd", hours: "Daily: 7:00 AM – 11:00 PM", phone: "(760) 371-1359", category: "Retail & Shopping", lat: 35.6225, lng: -117.6610 },
-            { id: 24, name: "Trona Senior Center", city: "Trona", address: "8160 Slate Rd", hours: "Mon–Fri: 9:00 AM – 2:00 PM", phone: "(760) 372-5000", category: "Community & Faith", lat: 35.7580, lng: -117.3850 }
+            { id: 12, name: "Navy Federal Credit Union", city: "Ridgecrest", address: "234 N Balsam St", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(888) 842-6328", category: "Services & Fitness", lat: 35.6258, lng: -117.6675 },
+            { id: 13, name: "Patriot Bar & Grill", city: "Ridgecrest", address: "117 E Ridgecrest Blvd", hours: "Thu–Tue: 10:00 AM – 2:00 AM, Wed: 3:00 PM – 2:00 AM", phone: "(760) 463-1297", category: "Dining & Cafe", lat: 35.6228, lng: -117.6635 },
+            { id: 14, name: "Quinn's Hobbies", city: "Ridgecrest", address: "4521 W Inyokern Rd", hours: "Mon–Fri: 11:00 AM – 6:00 PM", phone: "(760) 377-4860", category: "Entertainment & Hobbies", lat: 35.6415, lng: -117.7520 },
+            { id: 15, name: "Ridgecrest Presbyterian Church", city: "Ridgecrest", address: "633 W Las Flores Ave", hours: "Sun: 10:00 AM – 11:30 AM", phone: "(760) 375-2214", category: "Community & Faith", lat: 35.6358, lng: -117.6745 },
+            { id: 16, name: "Ridgecrest Chamber of Commerce", city: "Ridgecrest", address: "128 E California Ave", hours: "Mon–Fri: 8:30 AM – 4:30 PM", phone: "(760) 375-8331", category: "Community & Faith", lat: 35.6220, lng: -117.6660 },
+            { id: 17, name: "Ridgecrest Cinemas", city: "Ridgecrest", address: "1631 Triangle Dr", hours: "Daily: 12:00 PM – 10:00 PM", phone: "(760) 446-6996", category: "Entertainment & Hobbies", lat: 35.6455, lng: -117.6625 },
+            { id: 18, name: "Schu-Fu Martial Arts Dojo #119", city: "Ridgecrest", address: "145 Panamint Ave", hours: "Mon–Wed: 4:30 PM – 8:00 PM, Sat: 8:00 AM – 11:30 AM", phone: "(760) 915-0028", category: "Services & Fitness", lat: 35.6250, lng: -117.6620 },
+            { id: 19, name: "Studio 760", city: "Ridgecrest", address: "841 N Downs St d", hours: "Tue–Sat: 8:00 AM – 6:00 PM", phone: "(760) 463-1193", category: "Services & Fitness", lat: 35.6352, lng: -117.6742 },
+            { id: 20, name: "The Moose - China Lake Lodge 258", city: "Ridgecrest", address: "150 W Reeves Ave", hours: "Daily: 9:00 AM – 8:00 PM", phone: "(760) 428-6247", category: "Community & Faith", lat: 35.6168, lng: -117.6680 },
+            { id: 21, name: "Top Shelf Aesthetics", city: "Ridgecrest", address: "123 Grande Way, Suite F", hours: "Mon–Thu: 10:00 AM – 5:00 PM", phone: "(760) 223-8121", category: "Services & Fitness", lat: 35.6225, lng: -117.6650 },
+            { id: 22, name: "Walmart Supercenter", city: "Ridgecrest", address: "201 E Bowman Rd", hours: "Daily: 6:00 AM – 11:00 PM", phone: "(760) 371-4974", category: "Retail & Shopping", lat: 35.6085, lng: -117.6615 },
+            { id: 23, name: "Trona Senior Center", city: "Trona", address: "13187 Market St", hours: "Mon–Thu: 8:00 AM – 3:00 PM, Fri: 8:00 AM – 12:00 PM", phone: "(760) 372-5889", category: "Community & Faith", lat: 35.7642, lng: -117.3755 }
         ];
 
         const localEvents = [
@@ -386,22 +385,31 @@
 
                     <!-- Listed Hours & Verify Caption -->
                     <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 space-y-1">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="text-slate-400 flex items-center gap-1 font-medium">
+                        <div class="flex items-center justify-between text-xs gap-2">
+                            <span class="text-slate-400 flex items-center gap-1 font-medium shrink-0">
                                 <i data-lucide="clock" class="w-3 h-3 text-emerald-400"></i> Hours:
                             </span>
-                            <span class="text-slate-200 font-semibold">${site.hours}</span>
+                            <span class="text-slate-200 font-semibold text-right">${site.hours}</span>
                         </div>
                         <div class="pt-1 border-t border-slate-800/60 flex items-center justify-between text-[11px]">
-                            <span class="text-amber-400/90 font-medium">📞 ${site.phone}</span>
-                            <span class="text-slate-500 italic text-[10px]">Verify by calling before arriving</span>
+                            ${site.phone
+                                ? `<span class="text-amber-400/90 font-medium">📞 ${site.phone}</span>
+                                   <span class="text-slate-500 italic text-[10px]">Verify by calling before arriving</span>`
+                                : `<span class="text-slate-500 italic font-medium">No phone listed</span>
+                                   <span class="text-slate-500 italic text-[10px]">Check hours before arriving</span>`
+                            }
                         </div>
                     </div>
 
                     <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-                        <a href="tel:${site.phone.replace(/[^0-9]/g, '')}" class="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1">
-                            <i data-lucide="phone" class="w-3.5 h-3.5"></i> Call Location
-                        </a>
+                        ${site.phone
+                            ? `<a href="tel:${site.phone.replace(/[^0-9]/g, '')}" class="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1">
+                                   <i data-lucide="phone" class="w-3.5 h-3.5"></i> Call Location
+                               </a>`
+                            : `<span class="text-slate-500 italic flex items-center gap-1">
+                                   <i data-lucide="phone-off" class="w-3.5 h-3.5"></i> No phone listed
+                               </span>`
+                        }
                         <a href="https://maps.google.com/?q=${encodeURIComponent(site.name + ' ' + site.address + ' ' + site.city + ' CA')}" target="_blank" class="text-slate-400 hover:text-white flex items-center gap-1">
                             <span>Directions</span>
                             <i data-lucide="external-link" class="w-3 h-3"></i>
@@ -421,7 +429,12 @@
                     <td class="p-3.5"><span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded text-[11px]">${site.city}</span></td>
                     <td class="p-3.5 text-slate-300">${site.address}</td>
                     <td class="p-3.5 text-slate-300">${site.hours}</td>
-                    <td class="p-3.5 font-medium text-amber-300">${site.phone} <div class="text-[9px] text-slate-500 italic">Call to verify</div></td>
+                    <td class="p-3.5 font-medium">
+                        ${site.phone
+                            ? `<span class="text-amber-300">${site.phone}</span><div class="text-[9px] text-slate-500 italic">Call to verify</div>`
+                            : `<span class="text-slate-500 italic">No phone listed</span>`
+                        }
+                    </td>
                     <td class="p-3.5 text-right">
                         <a href="https://maps.google.com/?q=${encodeURIComponent(site.name + ' ' + site.address + ' ' + site.city + ' CA')}" target="_blank" class="inline-flex items-center gap-1 text-emerald-400 hover:text-emerald-300 font-semibold">
                             <span>Map</span>
@@ -440,12 +453,15 @@
             sites.forEach(site => {
                 if (site.lat && site.lng) {
                     const marker = L.marker([site.lat, site.lng]);
+                    const phoneLine = site.phone
+                        ? `<span style="color: #fbbf24; font-weight: 600;">📞 ${site.phone}</span>`
+                        : `<span style="color: #94a3b8; font-style: italic;">No phone listed</span>`;
                     marker.bindPopup(`
                         <div style="font-family: Inter, sans-serif; font-size: 11px; line-height: 1.4;">
                             <strong style="font-size: 12px; color: #34d399;">${site.name}</strong><br>
                             <span style="color: #cbd5e1;">${site.address}, ${site.city}</span><br>
                             <span style="color: #94a3b8;">⏰ ${site.hours}</span><br>
-                            <span style="color: #fbbf24; font-weight: 600;">📞 ${site.phone}</span>
+                            ${phoneLine}
                         </div>
                     `);
                     markersLayer.addLayer(marker);
