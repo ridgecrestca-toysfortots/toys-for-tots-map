@@ -16,13 +16,13 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #064e3b; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #047857; border-radius: 3px; }
         /* Custom Dark Theme Leaflet Popups */
         .leaflet-popup-content-wrapper, .leaflet-popup-tip {
-            background: #0f172a !important;
+            background: #064e3b !important;
             color: #f1f5f9 !important;
-            border: 1px solid #334155 !important;
+            border: 1px solid #059669 !important;
             border-radius: 12px !important;
         }
         .leaflet-container {
@@ -30,20 +30,20 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-red-500 selection:text-white">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
 
-    <!-- Top Alert Banner -->
-    <div class="bg-gradient-to-r from-red-700 via-red-600 to-red-700 text-white text-xs md:text-sm font-semibold py-2 px-4 shadow-md">
+    <!-- Top Festive Alert Banner -->
+    <div class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-red-700 text-white text-xs md:text-sm font-semibold py-2 px-4 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
             <div class="flex items-center space-x-2">
-                <span class="bg-white text-red-700 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide animate-pulse">Priority Drive</span>
+                <span class="bg-white text-emerald-900 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide animate-pulse">🎄 Holiday 2026 Drive</span>
                 <span>Covering ages <strong>0 to 12</strong> years old</span>
             </div>
             <div class="flex items-center space-x-2">
-                <i data-lucide="heart-handshake" class="w-4 h-4 text-red-200"></i>
+                <i data-lucide="gift" class="w-4 h-4 text-emerald-200"></i>
                 <span>Biggest Needs: <strong>Ages 0 to 2</strong> & <strong>Ages 10–12 Females</strong></span>
             </div>
-            <div class="hidden lg:flex items-center space-x-1 text-red-100 text-xs">
+            <div class="hidden lg:flex items-center space-x-1 text-emerald-100 text-xs">
                 <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
                 <span>Deadline: <strong>Dec 14th</strong></span>
             </div>
@@ -51,15 +51,15 @@
     </div>
 
     <!-- Header Navigation -->
-    <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-30">
+    <header class="bg-slate-900/90 backdrop-blur border-b border-emerald-900/40 sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="bg-red-600 p-2 rounded-xl shadow-lg shadow-red-600/30">
-                    <i data-lucide="gift" class="w-6 h-6 text-white"></i>
+                <div class="bg-emerald-700 p-2 rounded-xl shadow-lg shadow-emerald-900/40 border border-emerald-500/30">
+                    <i data-lucide="tree-pine" class="w-6 h-6 text-white"></i>
                 </div>
                 <div>
                     <h1 class="font-black text-lg md:text-xl tracking-tight text-white flex items-center gap-2">
-                        Toys for Tots <span class="bg-red-950 text-red-400 text-xs font-semibold px-2 py-0.5 rounded border border-red-800/50 hidden sm:inline-block">Kern County - North East Ridgecrest Drive</span>
+                        Toys for Tots <span class="bg-emerald-950 text-emerald-400 text-xs font-semibold px-2 py-0.5 rounded border border-emerald-800/50 hidden sm:inline-block">Kern County - North East Ridgecrest Drive</span>
                     </h1>
                     <p class="text-xs text-slate-400">Ridgecrest • Inyokern • Trona, CA</p>
                 </div>
@@ -67,7 +67,7 @@
             
             <div class="flex items-center space-x-3">
                 <button onclick="exportData('csv')" class="flex items-center space-x-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-3 py-2 rounded-lg transition">
-                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                    <i data-lucide="download" class="w-3.5 h-3.5 text-emerald-400"></i>
                     <span>Export CSV</span>
                 </button>
             </div>
@@ -79,12 +79,12 @@
 
         <!-- Hero Card -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="md:col-span-2 bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-800 rounded-2xl p-5 shadow-xl relative overflow-hidden">
-                <div class="absolute -right-6 -bottom-6 opacity-10 text-red-500 pointer-events-none">
-                    <i data-lucide="gift" class="w-48 h-48"></i>
+            <div class="md:col-span-2 bg-gradient-to-br from-slate-900 via-emerald-950/30 to-slate-900 border border-emerald-900/40 rounded-2xl p-5 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-6 -bottom-6 opacity-10 text-emerald-500 pointer-events-none">
+                    <i data-lucide="tree-pine" class="w-48 h-48"></i>
                 </div>
                 <div class="relative z-10 space-y-2">
-                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20">
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                         <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
                         <span>Official Toy Drop Locations</span>
                     </div>
@@ -97,25 +97,25 @@
             </div>
 
             <!-- Priority Needs -->
-            <div class="bg-gradient-to-br from-amber-950/40 to-slate-900 border border-amber-500/30 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+            <div class="bg-gradient-to-br from-emerald-950/40 to-slate-900 border border-emerald-500/30 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
                 <div class="space-y-2">
-                    <div class="flex items-center justify-between text-amber-400">
+                    <div class="flex items-center justify-between text-emerald-400">
                         <span class="text-xs font-bold uppercase tracking-wider">Priority Needs</span>
                         <i data-lucide="alert-circle" class="w-4 h-4"></i>
                     </div>
                     <h3 class="text-sm font-semibold text-white">Most Needed Age Groups</h3>
                     <ul class="text-xs text-slate-300 space-y-1">
-                        <li class="flex items-center gap-1.5 text-amber-200">
-                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-amber-400"></i>
+                        <li class="flex items-center gap-1.5 text-emerald-200">
+                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
                             <span><strong>Ages 0 to 2</strong> (Teethers, rattles, board books)</span>
                         </li>
-                        <li class="flex items-center gap-1.5 text-amber-200">
-                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-amber-400"></i>
+                        <li class="flex items-center gap-1.5 text-emerald-200">
+                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
                             <span><strong>Ages 10 to 12</strong> (Pre-teen Females)</span>
                         </li>
                     </ul>
                 </div>
-                <div class="pt-3 border-t border-amber-500/20 text-[11px] text-amber-300/80">
+                <div class="pt-3 border-t border-emerald-500/20 text-[11px] text-emerald-300/80">
                     * New, unwrapped items only (No blankets)
                 </div>
             </div>
@@ -125,14 +125,14 @@
                 <div>
                     <div class="flex items-center justify-between text-slate-400 mb-2">
                         <span class="text-xs font-bold uppercase tracking-wider">Drive Deadline</span>
-                        <i data-lucide="clock" class="w-4 h-4 text-red-400"></i>
+                        <i data-lucide="clock" class="w-4 h-4 text-emerald-400"></i>
                     </div>
                     <div class="text-2xl font-black text-white">December 14</div>
                     <p class="text-xs text-slate-400 mt-1">Final collection date for local drop boxes</p>
                 </div>
                 <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
                     <span class="text-slate-400">Total Sites</span>
-                    <span class="font-bold text-red-400 bg-red-950/60 px-2 py-0.5 rounded border border-red-800/40" id="totalSitesCount">22 Active</span>
+                    <span class="font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40" id="totalSitesCount">24 Active</span>
                 </div>
             </div>
         </div>
@@ -141,7 +141,7 @@
         <section class="space-y-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <div class="p-2 bg-red-500/10 text-red-400 rounded-lg border border-red-500/20">
+                    <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
                         <i data-lucide="calendar-days" class="w-5 h-5"></i>
                     </div>
                     <div>
@@ -160,11 +160,11 @@
                 <div class="relative">
                     <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
                     <input type="text" id="searchInput" oninput="filterSites()" placeholder="Search site name or address..." 
-                        class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-red-500 transition">
+                        class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
                 </div>
 
                 <div>
-                    <select id="cityFilter" onchange="filterSites()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-red-500 transition">
+                    <select id="cityFilter" onchange="filterSites()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition">
                         <option value="ALL">All Cities (Ridgecrest, Inyokern, Trona)</option>
                         <option value="Ridgecrest">Ridgecrest, CA</option>
                         <option value="Inyokern">Inyokern, CA</option>
@@ -173,7 +173,7 @@
                 </div>
 
                 <div>
-                    <select id="categoryFilter" onchange="filterSites()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-red-500 transition">
+                    <select id="categoryFilter" onchange="filterSites()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition">
                         <option value="ALL">All Categories</option>
                         <option value="Retail & Shopping">Retail & Shopping</option>
                         <option value="Dining & Cafe">Dining & Cafe</option>
@@ -184,7 +184,7 @@
                 </div>
 
                 <div class="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800">
-                    <button onclick="setView('cards')" id="viewCardsBtn" class="flex-1 py-1.5 text-xs font-medium rounded-md bg-slate-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition">
+                    <button onclick="setView('cards')" id="viewCardsBtn" class="flex-1 py-1.5 text-xs font-medium rounded-md bg-emerald-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition">
                         <i data-lucide="grid" class="w-3.5 h-3.5"></i>
                         <span>Grid</span>
                     </button>
@@ -226,7 +226,7 @@
         <div id="mapView" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl space-y-4">
             <div class="flex items-center justify-between text-xs text-slate-400">
                 <span class="flex items-center gap-1">
-                    <i data-lucide="map" class="w-4 h-4 text-red-400"></i>
+                    <i data-lucide="map" class="w-4 h-4 text-emerald-400"></i>
                     Interactive OpenStreetMap (Ridgecrest, Inyokern, Trona)
                 </span>
                 <span>Click markers to view operating hours & contact info</span>
@@ -238,16 +238,16 @@
         <!-- Gift Guidelines Box -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
             <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                <i data-lucide="info" class="w-4 h-4 text-red-400"></i>
+                <i data-lucide="info" class="w-4 h-4 text-emerald-400"></i>
                 Toy Donation Guidelines
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-300">
                 <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                    <h4 class="font-bold text-red-400 mb-1">Priority: Ages 0 to 2</h4>
+                    <h4 class="font-bold text-emerald-400 mb-1">Priority: Ages 0 to 2</h4>
                     <p class="text-slate-400">Teethers, sensory rattles, building blocks, board books, and developmental infant toys.</p>
                 </div>
                 <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                    <h4 class="font-bold text-red-400 mb-1">Priority: Ages 10 to 12 (Females)</h4>
+                    <h4 class="font-bold text-emerald-400 mb-1">Priority: Ages 10 to 12 (Females)</h4>
                     <p class="text-slate-400">Craft kits, art sets, headphones, board games, beauty accessories, and sports gear.</p>
                 </div>
                 <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
@@ -283,25 +283,28 @@
             { id: 11, name: "Maturango Museum, Inc.", city: "Ridgecrest", address: "100 E Las Flores Ave", hours: "Mon–Sat: 10:00 AM – 5:00 PM", phone: "(760) 375-6900", category: "Community & Faith", lat: 35.6360, lng: -117.6630 },
             { id: 12, name: "Navy Federal Credit Union", city: "Ridgecrest", address: "111 Grove St", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(888) 842-6328", category: "Services & Fitness", lat: 35.6280, lng: -117.6680 },
             { id: 13, name: "Patriot Bar & Grill", city: "Ridgecrest", address: "200 W Inyokern Rd", hours: "Tue–Sun: 11:00 AM – 10:00 PM", phone: "(760) 446-2270", category: "Dining & Cafe", lat: 35.6310, lng: -117.6710 },
-            { id: 14, name: "Ridgecrest Presbyterian Church", city: "Ridgecrest", address: "630 S Las Flores Ave", hours: "Mon–Thu: 9:00 AM – 2:00 PM", phone: "(760) 375-7161", category: "Community & Faith", lat: 35.6150, lng: -117.6610 },
-            { id: 15, name: "Ridgecrest Chamber of Commerce", city: "Ridgecrest", address: "128 E California Ave", hours: "Mon–Fri: 9:00 AM – 4:00 PM", phone: "(760) 375-8572", category: "Community & Faith", lat: 35.6220, lng: -117.6660 },
-            { id: 16, name: "Ridgecrest Cinemas", city: "Ridgecrest", address: "1631 N China Lake Blvd", hours: "Daily: 1:00 PM – 9:30 PM", phone: "(760) 371-1000", category: "Entertainment & Hobbies", lat: 35.6450, lng: -117.6640 },
-            { id: 17, name: "Schu-Fu Martial Arts Dojo #119", city: "Ridgecrest", address: "113 S China Lake Blvd", hours: "Mon–Fri: 3:00 PM – 8:00 PM", phone: "(760) 371-1119", category: "Services & Fitness", lat: 35.6215, lng: -117.6640 },
-            { id: 18, name: "Studio 760", city: "Ridgecrest", address: "231 W Ridgecrest Blvd", hours: "Tue–Sat: 9:00 AM – 6:00 PM", phone: "(760) 375-7760", category: "Services & Fitness", lat: 35.6231, lng: -117.6716 },
-            { id: 19, name: "TEYA Enterprises", city: "Ridgecrest", address: "139 S China Lake Blvd", hours: "Mon–Fri: 8:00 AM – 5:00 PM", phone: "(760) 375-4000", category: "Services & Fitness", lat: 35.6205, lng: -117.6640 },
-            { id: 20, name: "The Moose - China Lake Lodge 258", city: "Ridgecrest", address: "679 S Norma St", hours: "Daily: 1:00 PM – 9:00 PM", phone: "(760) 375-7151", category: "Community & Faith", lat: 35.6140, lng: -117.6690 },
-            { id: 21, name: "Top Shelf Aesthetics", city: "Ridgecrest", address: "121 S China Lake Blvd", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(760) 375-7430", category: "Services & Fitness", lat: 35.6218, lng: -117.6640 },
-            { id: 22, name: "Walmart Supercenter", city: "Ridgecrest", address: "201 E China Lake Blvd", hours: "Daily: 7:00 AM – 11:00 PM", phone: "(760) 371-1359", category: "Retail & Shopping", lat: 35.6225, lng: -117.6610 }
+            { id: 14, name: "Quinn's Hobbies", city: "Ridgecrest", address: "237 W Ridgecrest Blvd", hours: "Mon–Sat: 10:00 AM – 6:00 PM", phone: "(760) 375-2741", category: "Entertainment & Hobbies", lat: 35.6231, lng: -117.6719 },
+            { id: 15, name: "Ridgecrest Presbyterian Church", city: "Ridgecrest", address: "630 S Las Flores Ave", hours: "Mon–Thu: 9:00 AM – 2:00 PM", phone: "(760) 375-7161", category: "Community & Faith", lat: 35.6150, lng: -117.6610 },
+            { id: 16, name: "Ridgecrest Chamber of Commerce", city: "Ridgecrest", address: "128 E California Ave", hours: "Mon–Fri: 9:00 AM – 4:00 PM", phone: "(760) 375-8572", category: "Community & Faith", lat: 35.6220, lng: -117.6660 },
+            { id: 17, name: "Ridgecrest Cinemas", city: "Ridgecrest", address: "1631 N China Lake Blvd", hours: "Daily: 1:00 PM – 9:30 PM", phone: "(760) 371-1000", category: "Entertainment & Hobbies", lat: 35.6450, lng: -117.6640 },
+            { id: 18, name: "Schu-Fu Martial Arts Dojo #119", city: "Ridgecrest", address: "113 S China Lake Blvd", hours: "Mon–Fri: 3:00 PM – 8:00 PM", phone: "(760) 371-1119", category: "Services & Fitness", lat: 35.6215, lng: -117.6640 },
+            { id: 19, name: "Studio 760", city: "Ridgecrest", address: "231 W Ridgecrest Blvd", hours: "Tue–Sat: 9:00 AM – 6:00 PM", phone: "(760) 375-7760", category: "Services & Fitness", lat: 35.6231, lng: -117.6716 },
+            { id: 20, name: "TEYA Enterprises", city: "Ridgecrest", address: "139 S China Lake Blvd", hours: "Mon–Fri: 8:00 AM – 5:00 PM", phone: "(760) 375-4000", category: "Services & Fitness", lat: 35.6205, lng: -117.6640 },
+            { id: 21, name: "The Moose - China Lake Lodge 258", city: "Ridgecrest", address: "679 S Norma St", hours: "Daily: 1:00 PM – 9:00 PM", phone: "(760) 375-7151", category: "Community & Faith", lat: 35.6140, lng: -117.6690 },
+            { id: 22, name: "Top Shelf Aesthetics", city: "Ridgecrest", address: "121 S China Lake Blvd", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(760) 375-7430", category: "Services & Fitness", lat: 35.6218, lng: -117.6640 },
+            { id: 23, name: "Walmart Supercenter", city: "Ridgecrest", address: "201 E China Lake Blvd", hours: "Daily: 7:00 AM – 11:00 PM", phone: "(760) 371-1359", category: "Retail & Shopping", lat: 35.6225, lng: -117.6610 },
+            { id: 24, name: "Trona Senior Center", city: "Trona", address: "8160 Slate Rd", hours: "Mon–Fri: 9:00 AM – 2:00 PM", phone: "(760) 372-5000", category: "Community & Faith", lat: 35.7580, lng: -117.3850 }
         ];
 
         const localEvents = [
-            { id: 98, title: "The Market at Ridgecrest at the Patriot", location: "Patriot Bar & Grill", dateStr: "2026-11-20T20:00:00", displayDate: "Fri, Nov 20, 2026", desc: "Local holiday vendor market & toy collection point." },
-            { id: 99, title: "KTS Farmers Market #1", location: "Kerr McGee Community Center", dateStr: "2026-11-14T13:00:00", displayDate: "Sat, Nov 14, 2026 (9am - 1pm)", desc: "Toy collection booth on-site!" },
-            { id: 100, title: "KTS Farmers Market #2", location: "Kerr McGee Community Center", dateStr: "2026-11-21T13:00:00", displayDate: "Sat, Nov 21, 2026 (9am - 1pm)", desc: "Holiday shopping & toy drop-off." },
-            { id: 101, title: "KTS Farmers Market #3", location: "Kerr McGee Community Center", dateStr: "2026-11-28T13:00:00", displayDate: "Sat, Nov 28, 2026 (9am - 1pm)", desc: "Small Business Saturday drive." },
-            { id: 102, title: "KTS Farmers Market #4", location: "Kerr McGee Community Center", dateStr: "2026-12-05T13:00:00", displayDate: "Sat, Dec 5, 2026 (9am - 1pm)", desc: "Final Farmers Market drop box." },
-            { id: 103, title: "Santa's Art Shop", location: "Ridgecrest (Maturango Museum / Community Center)", dateStr: "2026-12-06T17:00:00", displayDate: "Dec 5 & 6, 2026", desc: "Annual holiday craft boutique and toy drop-off." },
-            { id: 104, title: "Scott's Toys for Tots Car Show", location: "Ridgecrest, CA", dateStr: "2026-12-12T16:00:00", displayDate: "Sat, Dec 12, 2026", desc: "Annual charity car show supporting Toys for Tots." }
+            { id: 99, title: "KTS Farmers Market #1", location: "Tractor Supply Co. Parking Lot (Ridgecrest)", dateStr: "2026-11-14T13:00:00", displayDate: "Sat, Nov 14, 2026 (9:00 AM – 1:00 PM)", desc: "Toy collection booth on-site!" },
+            { id: 98, title: "The Market at Ridgecrest", location: "Patriot Bar & Grill", dateStr: "2026-11-20T21:00:00", displayDate: "Fri, Nov 20, 2026 (5:00 PM – 9:00 PM)", desc: "Local holiday vendor market & toy collection point." },
+            { id: 100, title: "KTS Farmers Market #2", location: "Tractor Supply Co. Parking Lot (Ridgecrest)", dateStr: "2026-11-21T13:00:00", displayDate: "Sat, Nov 21, 2026 (9:00 AM – 1:00 PM)", desc: "Holiday shopping & toy drop-off." },
+            { id: 101, title: "KTS Farmers Market #3", location: "Tractor Supply Co. Parking Lot (Ridgecrest)", dateStr: "2026-11-28T13:00:00", displayDate: "Sat, Nov 28, 2026 (9:00 AM – 1:00 PM)", desc: "Small Business Saturday drive." },
+            { id: 105, title: "City of Ridgecrest Tree Lighting", location: "Ridgecrest City Hall / Freedom Park", dateStr: "2026-12-04T21:00:00", displayDate: "Fri, Dec 4, 2026 (5:00 PM – 9:00 PM)", desc: "Community holiday celebration & toy drive (Tree lights on at 6:00 PM)." },
+            { id: 102, title: "KTS Farmers Market #4", location: "Tractor Supply Co. Parking Lot (Ridgecrest)", dateStr: "2026-12-05T13:00:00", displayDate: "Sat, Dec 5, 2026 (9:00 AM – 1:00 PM)", desc: "Final Farmers Market drop box." },
+            { id: 103, title: "Santa's Art Shop", location: "Desert Empire Fairgrounds", dateStr: "2026-12-06T16:00:00", displayDate: "Sat, Dec 5 (9:00 AM – 5:00 PM) & Sun, Dec 6, 2026 (9:00 AM – 4:00 PM)", desc: "Annual holiday craft boutique and toy drop-off." },
+            { id: 104, title: "Scott's Toys for Tots Car Show", location: "Tractor Supply Co. Parking Lot (Ridgecrest)", dateStr: "2026-12-12T16:00:00", displayDate: "Sat, Dec 12, 2026 (10:00 AM – 4:00 PM)", desc: "Annual charity car show supporting Toys for Tots at Tractor Supply." }
         ];
 
         let sitesData = [...initialDropSites];
@@ -311,7 +314,7 @@
         function initMap() {
             if (!leafletMap) {
                 // Centered on Ridgecrest, CA
-                leafletMap = L.map('leafletMap').setView([35.625, -117.670], 13);
+                leafletMap = L.map('leafletMap').setView([35.625, -117.670], 11);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     attribution: '© OpenStreetMap contributors'
@@ -329,13 +332,13 @@
                 const isCompleted = now > eventDate;
 
                 return `
-                    <div class="bg-slate-900 border ${isCompleted ? 'border-slate-800 opacity-60' : 'border-red-500/30'} rounded-xl p-3.5 flex flex-col justify-between space-y-2 relative overflow-hidden">
+                    <div class="bg-slate-900 border ${isCompleted ? 'border-slate-800 opacity-60' : 'border-emerald-500/30'} rounded-xl p-3.5 flex flex-col justify-between space-y-2 relative overflow-hidden">
                         <div class="space-y-1">
                             <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded ${isCompleted ? 'bg-slate-800 text-slate-400' : 'bg-red-500/10 text-red-400 border border-red-500/20'}">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded ${isCompleted ? 'bg-slate-800 text-slate-400' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}">
                                     ${isCompleted ? 'Completed' : 'Upcoming Event'}
                                 </span>
-                                <i data-lucide="${isCompleted ? 'check-circle' : 'calendar'}" class="w-4 h-4 ${isCompleted ? 'text-slate-500' : 'text-red-400'}"></i>
+                                <i data-lucide="${isCompleted ? 'check-circle' : 'calendar'}" class="w-4 h-4 ${isCompleted ? 'text-slate-500' : 'text-emerald-400'}"></i>
                             </div>
                             <h4 class="font-bold text-sm text-white">${event.title}</h4>
                             <p class="text-xs text-amber-300 font-medium">${event.displayDate}</p>
@@ -363,10 +366,10 @@
             }
 
             container.innerHTML = sites.map(site => `
-                <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-4 shadow-lg transition duration-200 flex flex-col justify-between space-y-3">
+                <div class="bg-slate-900 border border-slate-800 hover:border-emerald-700/50 rounded-2xl p-4 shadow-lg transition duration-200 flex flex-col justify-between space-y-3">
                     <div class="space-y-2">
                         <div class="flex items-start justify-between gap-2">
-                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-red-400 border border-slate-700 uppercase tracking-wide">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-emerald-400 border border-slate-700 uppercase tracking-wide">
                                 ${site.city}
                             </span>
                             <span class="text-[11px] text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
@@ -375,7 +378,7 @@
                         </div>
                         <h3 class="font-bold text-base text-white leading-snug">${site.name}</h3>
                         <p class="text-xs text-slate-300 flex items-start gap-1.5">
-                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5"></i>
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5"></i>
                             <span>${site.address}, ${site.city}, CA</span>
                         </p>
                     </div>
@@ -384,7 +387,7 @@
                     <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 space-y-1">
                         <div class="flex items-center justify-between text-xs">
                             <span class="text-slate-400 flex items-center gap-1 font-medium">
-                                <i data-lucide="clock" class="w-3 h-3 text-red-400"></i> Hours:
+                                <i data-lucide="clock" class="w-3 h-3 text-emerald-400"></i> Hours:
                             </span>
                             <span class="text-slate-200 font-semibold">${site.hours}</span>
                         </div>
@@ -395,7 +398,7 @@
                     </div>
 
                     <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-                        <a href="tel:${site.phone.replace(/[^0-9]/g, '')}" class="text-red-400 hover:text-red-300 font-semibold flex items-center gap-1">
+                        <a href="tel:${site.phone.replace(/[^0-9]/g, '')}" class="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1">
                             <i data-lucide="phone" class="w-3.5 h-3.5"></i> Call Location
                         </a>
                         <a href="https://maps.google.com/?q=${encodeURIComponent(site.name + ' ' + site.address + ' ' + site.city + ' CA')}" target="_blank" class="text-slate-400 hover:text-white flex items-center gap-1">
@@ -419,7 +422,7 @@
                     <td class="p-3.5 text-slate-300">${site.hours}</td>
                     <td class="p-3.5 font-medium text-amber-300">${site.phone} <div class="text-[9px] text-slate-500 italic">Call to verify</div></td>
                     <td class="p-3.5 text-right">
-                        <a href="https://maps.google.com/?q=${encodeURIComponent(site.name + ' ' + site.address + ' ' + site.city + ' CA')}" target="_blank" class="inline-flex items-center gap-1 text-red-400 hover:text-red-300 font-semibold">
+                        <a href="https://maps.google.com/?q=${encodeURIComponent(site.name + ' ' + site.address + ' ' + site.city + ' CA')}" target="_blank" class="inline-flex items-center gap-1 text-emerald-400 hover:text-emerald-300 font-semibold">
                             <span>Map</span>
                             <i data-lucide="external-link" class="w-3 h-3"></i>
                         </a>
@@ -438,7 +441,7 @@
                     const marker = L.marker([site.lat, site.lng]);
                     marker.bindPopup(`
                         <div style="font-family: Inter, sans-serif; font-size: 11px; line-height: 1.4;">
-                            <strong style="font-size: 12px; color: #f87171;">${site.name}</strong><br>
+                            <strong style="font-size: 12px; color: #34d399;">${site.name}</strong><br>
                             <span style="color: #cbd5e1;">${site.address}, ${site.city}</span><br>
                             <span style="color: #94a3b8;">⏰ ${site.hours}</span><br>
                             <span style="color: #fbbf24; font-weight: 600;">📞 ${site.phone}</span>
@@ -481,10 +484,10 @@
                 btn.className = "flex-1 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition";
             });
 
-            if (mode === 'cards') btnCards.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-slate-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition";
-            if (mode === 'table') btnTable.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-slate-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition";
+            if (mode === 'cards') btnCards.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-emerald-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition";
+            if (mode === 'table') btnTable.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-emerald-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition";
             if (mode === 'map') {
-                btnMap.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-slate-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition";
+                btnMap.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-emerald-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition";
                 setTimeout(() => {
                     if (leafletMap) leafletMap.invalidateSize();
                 }, 150);
