@@ -8,17 +8,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        .bg-pattern {
-            background-color: #0f172a;
-            background-image: radial-gradient(#1e293b 1px, transparent 1px);
-            background-size: 24px 24px;
-        }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        /* Custom Dark Theme Leaflet Popups */
+        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+            background: #0f172a !important;
+            color: #f1f5f9 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 12px !important;
+        }
+        .leaflet-container {
+            font-family: 'Inter', sans-serif !important;
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-red-500 selection:text-white">
@@ -213,27 +222,17 @@
             </div>
         </div>
 
-        <!-- Visual Map View -->
+        <!-- Interactive Street Map View -->
         <div id="mapView" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl space-y-4">
             <div class="flex items-center justify-between text-xs text-slate-400">
                 <span class="flex items-center gap-1">
                     <i data-lucide="map" class="w-4 h-4 text-red-400"></i>
-                    Interactive Region Map Visualizer (Ridgecrest, Inyokern, Trona)
+                    Interactive OpenStreetMap (Ridgecrest, Inyokern, Trona)
                 </span>
-                <span>Click pins to view site details</span>
+                <span>Click markers to view operating hours & contact info</span>
             </div>
             
-            <div class="relative w-full h-96 bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center bg-pattern">
-                <svg class="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="0" y1="20%" x2="100%" y2="20%" stroke="#475569" stroke-dasharray="4" />
-                    <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#475569" stroke-dasharray="4" />
-                    <line x1="0" y1="80%" x2="100%" y2="80%" stroke="#475569" stroke-dasharray="4" />
-                    <line x1="30%" y1="0" x2="30%" y2="100%" stroke="#475569" stroke-dasharray="4" />
-                    <line x1="60%" y1="0" x2="60%" y2="100%" stroke="#475569" stroke-dasharray="4" />
-                </svg>
-
-                <div id="mapPinsContainer" class="relative w-full h-full"></div>
-            </div>
+            <div id="leafletMap" class="w-full h-[500px] rounded-xl border border-slate-800 z-10 shadow-inner"></div>
         </div>
 
         <!-- Gift Guidelines Box -->
@@ -271,28 +270,28 @@
     <!-- JavaScript App Logic -->
     <script>
         const initialDropSites = [
-            { id: 1, name: "American Legion Post 684", city: "Ridgecrest", address: "641 W Inyokern Rd", hours: "Mon–Sat: 12:00 PM – 9:00 PM", phone: "(760) 446-0150", category: "Community & Faith", mapX: 40, mapY: 30 },
-            { id: 2, name: "Anna's Hair Design", city: "Ridgecrest", address: "209 W Ridgecrest Blvd", hours: "Tue–Sat: 9:00 AM – 5:00 PM", phone: "(760) 375-1212", category: "Services & Fitness", mapX: 43, mapY: 50 },
-            { id: 3, name: "China Lake Museum", city: "Ridgecrest", address: "130 E Las Flores Ave", hours: "Tue–Sat: 10:00 AM – 4:00 PM", phone: "(760) 375-6900", category: "Community & Faith", mapX: 52, mapY: 42 },
-            { id: 4, name: "Compassionate Couch", city: "Ridgecrest", address: "230 W Ridgecrest Blvd", hours: "Mon–Fri: 10:00 AM – 6:00 PM", phone: "(760) 375-3500", category: "Services & Fitness", mapX: 44, mapY: 51 },
-            { id: 5, name: "Desert Empire Fairgrounds", city: "Ridgecrest", address: "520 S Richmond Rd", hours: "Mon–Fri: 8:00 AM – 4:30 PM", phone: "(760) 375-8000", category: "Community & Faith", mapX: 55, mapY: 65 },
-            { id: 6, name: "Desert Valleys Federal Credit Union", city: "Ridgecrest", address: "100 E Ward Ave", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(760) 446-3500", category: "Services & Fitness", mapX: 52, mapY: 58 },
-            { id: 7, name: "Fistful of Cards", city: "Ridgecrest", address: "204 S China Lake Blvd", hours: "Mon–Sat: 10:00 AM – 7:00 PM", phone: "(760) 446-4263", category: "Entertainment & Hobbies", mapX: 49, mapY: 55 },
-            { id: 8, name: "Gateway Hardware", city: "Ridgecrest", address: "632 S China Lake Blvd", hours: "Mon–Sat: 8:00 AM – 6:00 PM", phone: "(760) 375-1521", category: "Retail & Shopping", mapX: 50, mapY: 59 },
-            { id: 9, name: "Howl'n Coyote Bar and Grill", city: "Inyokern", address: "1353 Brown Rd", hours: "Wed–Sun: 11:00 AM – 9:00 PM", phone: "(760) 377-5000", category: "Dining & Cafe", mapX: 20, mapY: 35 },
-            { id: 10, name: "Just for Fun Dog Agility Playground", city: "Ridgecrest", address: "800 S Richmond Rd", hours: "Daily: Sunrise – Sunset", phone: "(760) 382-7890", category: "Services & Fitness", mapX: 56, mapY: 70 },
-            { id: 11, name: "Maturango Museum, Inc.", city: "Ridgecrest", address: "100 E Las Flores Ave", hours: "Mon–Sat: 10:00 AM – 5:00 PM", phone: "(760) 375-6900", category: "Community & Faith", mapX: 51, mapY: 41 },
-            { id: 12, name: "Navy Federal Credit Union", city: "Ridgecrest", address: "111 Grove St", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(888) 842-6328", category: "Services & Fitness", mapX: 48, mapY: 45 },
-            { id: 13, name: "Patriot Bar & Grill", city: "Ridgecrest", address: "200 W Inyokern Rd", hours: "Tue–Sun: 11:00 AM – 10:00 PM", phone: "(760) 446-2270", category: "Dining & Cafe", mapX: 42, mapY: 32 },
-            { id: 14, name: "Ridgecrest Presbyterian Church", city: "Ridgecrest", address: "630 S Las Flores Ave", hours: "Mon–Thu: 9:00 AM – 2:00 PM", phone: "(760) 375-7161", category: "Community & Faith", mapX: 53, mapY: 44 },
-            { id: 15, name: "Ridgecrest Chamber of Commerce", city: "Ridgecrest", address: "128 E California Ave", hours: "Mon–Fri: 9:00 AM – 4:00 PM", phone: "(760) 375-8572", category: "Community & Faith", mapX: 48, mapY: 52 },
-            { id: 16, name: "Ridgecrest Cinemas", city: "Ridgecrest", address: "1631 N China Lake Blvd", hours: "Daily: 1:00 PM – 9:30 PM", phone: "(760) 371-1000", category: "Entertainment & Hobbies", mapX: 46, mapY: 28 },
-            { id: 17, name: "Schu-Fu Martial Arts Dojo #119", city: "Ridgecrest", address: "113 S China Lake Blvd", hours: "Mon–Fri: 3:00 PM – 8:00 PM", phone: "(760) 371-1119", category: "Services & Fitness", mapX: 49, mapY: 53 },
-            { id: 18, name: "Studio 760", city: "Ridgecrest", address: "231 W Ridgecrest Blvd", hours: "Tue–Sat: 9:00 AM – 6:00 PM", phone: "(760) 375-7760", category: "Services & Fitness", mapX: 43, mapY: 51 },
-            { id: 19, name: "TEYA Enterprises", city: "Ridgecrest", address: "139 S China Lake Blvd", hours: "Mon–Fri: 8:00 AM – 5:00 PM", phone: "(760) 375-4000", category: "Services & Fitness", mapX: 50, mapY: 54 },
-            { id: 20, name: "The Moose - China Lake Lodge 258", city: "Ridgecrest", address: "679 S Norma St", hours: "Daily: 1:00 PM – 9:00 PM", phone: "(760) 375-7151", category: "Community & Faith", mapX: 45, mapY: 60 },
-            { id: 21, name: "Top Shelf Aesthetics", city: "Ridgecrest", address: "121 S China Lake Blvd", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(760) 375-7430", category: "Services & Fitness", mapX: 49, mapY: 53 },
-            { id: 22, name: "Walmart Supercenter", city: "Ridgecrest", address: "201 E China Lake Blvd", hours: "Daily: 7:00 AM – 11:00 PM", phone: "(760) 371-1359", category: "Retail & Shopping", mapX: 50, mapY: 48 }
+            { id: 1, name: "American Legion Post 684", city: "Ridgecrest", address: "641 W Inyokern Rd", hours: "Mon–Sat: 12:00 PM – 9:00 PM", phone: "(760) 446-0150", category: "Community & Faith", lat: 35.6312, lng: -117.6745 },
+            { id: 2, name: "Anna's Hair Design", city: "Ridgecrest", address: "209 W Ridgecrest Blvd", hours: "Tue–Sat: 9:00 AM – 5:00 PM", phone: "(760) 375-1212", category: "Services & Fitness", lat: 35.6231, lng: -117.6702 },
+            { id: 3, name: "China Lake Museum", city: "Ridgecrest", address: "130 E Las Flores Ave", hours: "Tue–Sat: 10:00 AM – 4:00 PM", phone: "(760) 375-6900", category: "Community & Faith", lat: 35.6358, lng: -117.6620 },
+            { id: 4, name: "Compassionate Couch", city: "Ridgecrest", address: "230 W Ridgecrest Blvd", hours: "Mon–Fri: 10:00 AM – 6:00 PM", phone: "(760) 375-3500", category: "Services & Fitness", lat: 35.6232, lng: -117.6715 },
+            { id: 5, name: "Desert Empire Fairgrounds", city: "Ridgecrest", address: "520 S Richmond Rd", hours: "Mon–Fri: 8:00 AM – 4:30 PM", phone: "(760) 375-8000", category: "Community & Faith", lat: 35.6145, lng: -117.6530 },
+            { id: 6, name: "Desert Valleys Federal Credit Union", city: "Ridgecrest", address: "100 E Ward Ave", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(760) 446-3500", category: "Services & Fitness", lat: 35.6190, lng: -117.6635 },
+            { id: 7, name: "Fistful of Cards", city: "Ridgecrest", address: "204 S China Lake Blvd", hours: "Mon–Sat: 10:00 AM – 7:00 PM", phone: "(760) 446-4263", category: "Entertainment & Hobbies", lat: 35.6210, lng: -117.6640 },
+            { id: 8, name: "Gateway Hardware", city: "Ridgecrest", address: "632 S China Lake Blvd", hours: "Mon–Sat: 8:00 AM – 6:00 PM", phone: "(760) 375-1521", category: "Retail & Shopping", lat: 35.6152, lng: -117.6640 },
+            { id: 9, name: "Howl'n Coyote Bar and Grill", city: "Inyokern", address: "1353 Brown Rd", hours: "Wed–Sun: 11:00 AM – 9:00 PM", phone: "(760) 377-5000", category: "Dining & Cafe", lat: 35.6380, lng: -117.8020 },
+            { id: 10, name: "Just for Fun Dog Agility Playground", city: "Ridgecrest", address: "800 S Richmond Rd", hours: "Daily: Sunrise – Sunset", phone: "(760) 382-7890", category: "Services & Fitness", lat: 35.6102, lng: -117.6530 },
+            { id: 11, name: "Maturango Museum, Inc.", city: "Ridgecrest", address: "100 E Las Flores Ave", hours: "Mon–Sat: 10:00 AM – 5:00 PM", phone: "(760) 375-6900", category: "Community & Faith", lat: 35.6360, lng: -117.6630 },
+            { id: 12, name: "Navy Federal Credit Union", city: "Ridgecrest", address: "111 Grove St", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(888) 842-6328", category: "Services & Fitness", lat: 35.6280, lng: -117.6680 },
+            { id: 13, name: "Patriot Bar & Grill", city: "Ridgecrest", address: "200 W Inyokern Rd", hours: "Tue–Sun: 11:00 AM – 10:00 PM", phone: "(760) 446-2270", category: "Dining & Cafe", lat: 35.6310, lng: -117.6710 },
+            { id: 14, name: "Ridgecrest Presbyterian Church", city: "Ridgecrest", address: "630 S Las Flores Ave", hours: "Mon–Thu: 9:00 AM – 2:00 PM", phone: "(760) 375-7161", category: "Community & Faith", lat: 35.6150, lng: -117.6610 },
+            { id: 15, name: "Ridgecrest Chamber of Commerce", city: "Ridgecrest", address: "128 E California Ave", hours: "Mon–Fri: 9:00 AM – 4:00 PM", phone: "(760) 375-8572", category: "Community & Faith", lat: 35.6220, lng: -117.6660 },
+            { id: 16, name: "Ridgecrest Cinemas", city: "Ridgecrest", address: "1631 N China Lake Blvd", hours: "Daily: 1:00 PM – 9:30 PM", phone: "(760) 371-1000", category: "Entertainment & Hobbies", lat: 35.6450, lng: -117.6640 },
+            { id: 17, name: "Schu-Fu Martial Arts Dojo #119", city: "Ridgecrest", address: "113 S China Lake Blvd", hours: "Mon–Fri: 3:00 PM – 8:00 PM", phone: "(760) 371-1119", category: "Services & Fitness", lat: 35.6215, lng: -117.6640 },
+            { id: 18, name: "Studio 760", city: "Ridgecrest", address: "231 W Ridgecrest Blvd", hours: "Tue–Sat: 9:00 AM – 6:00 PM", phone: "(760) 375-7760", category: "Services & Fitness", lat: 35.6231, lng: -117.6716 },
+            { id: 19, name: "TEYA Enterprises", city: "Ridgecrest", address: "139 S China Lake Blvd", hours: "Mon–Fri: 8:00 AM – 5:00 PM", phone: "(760) 375-4000", category: "Services & Fitness", lat: 35.6205, lng: -117.6640 },
+            { id: 20, name: "The Moose - China Lake Lodge 258", city: "Ridgecrest", address: "679 S Norma St", hours: "Daily: 1:00 PM – 9:00 PM", phone: "(760) 375-7151", category: "Community & Faith", lat: 35.6140, lng: -117.6690 },
+            { id: 21, name: "Top Shelf Aesthetics", city: "Ridgecrest", address: "121 S China Lake Blvd", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(760) 375-7430", category: "Services & Fitness", lat: 35.6218, lng: -117.6640 },
+            { id: 22, name: "Walmart Supercenter", city: "Ridgecrest", address: "201 E China Lake Blvd", hours: "Daily: 7:00 AM – 11:00 PM", phone: "(760) 371-1359", category: "Retail & Shopping", lat: 35.6225, lng: -117.6610 }
         ];
 
         const localEvents = [
@@ -306,6 +305,20 @@
         ];
 
         let sitesData = [...initialDropSites];
+        let leafletMap = null;
+        let markersLayer = null;
+
+        function initMap() {
+            if (!leafletMap) {
+                // Centered on Ridgecrest, CA
+                leafletMap = L.map('leafletMap').setView([35.625, -117.670], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(leafletMap);
+                markersLayer = L.layerGroup().addTo(leafletMap);
+            }
+        }
 
         function renderEvents() {
             const container = document.getElementById('eventsContainer');
@@ -417,21 +430,23 @@
         }
 
         function renderMapPins(sites) {
-            const container = document.getElementById('mapPinsContainer');
-            container.innerHTML = sites.map(site => `
-                <div class="absolute transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer" style="left: ${site.mapX}%; top: ${site.mapY}%;">
-                    <div class="bg-red-600 hover:bg-red-500 text-white p-2 rounded-full shadow-lg border-2 border-slate-900 transition transform group-hover:scale-125">
-                        <i data-lucide="gift" class="w-3.5 h-3.5"></i>
-                    </div>
-                    <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-52 bg-slate-900 border border-slate-700 text-slate-100 p-2.5 rounded-xl shadow-2xl text-[11px] opacity-0 group-hover:opacity-100 pointer-events-none transition duration-150 z-20 space-y-1">
-                        <div class="font-bold text-white">${site.name}</div>
-                        <div class="text-slate-400 text-[10px]">${site.address}</div>
-                        <div class="text-slate-300 text-[10px]">⏰ ${site.hours}</div>
-                        <div class="text-amber-300 text-[10px] font-semibold">📞 ${site.phone} (Call first)</div>
-                    </div>
-                </div>
-            `).join('');
-            lucide.createIcons();
+            initMap();
+            markersLayer.clearLayers();
+
+            sites.forEach(site => {
+                if (site.lat && site.lng) {
+                    const marker = L.marker([site.lat, site.lng]);
+                    marker.bindPopup(`
+                        <div style="font-family: Inter, sans-serif; font-size: 11px; line-height: 1.4;">
+                            <strong style="font-size: 12px; color: #f87171;">${site.name}</strong><br>
+                            <span style="color: #cbd5e1;">${site.address}, ${site.city}</span><br>
+                            <span style="color: #94a3b8;">⏰ ${site.hours}</span><br>
+                            <span style="color: #fbbf24; font-weight: 600;">📞 ${site.phone}</span>
+                        </div>
+                    `);
+                    markersLayer.addLayer(marker);
+                }
+            });
         }
 
         function filterSites() {
@@ -468,7 +483,12 @@
 
             if (mode === 'cards') btnCards.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-slate-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition";
             if (mode === 'table') btnTable.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-slate-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition";
-            if (mode === 'map') btnMap.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-slate-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition";
+            if (mode === 'map') {
+                btnMap.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-slate-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition";
+                setTimeout(() => {
+                    if (leafletMap) leafletMap.invalidateSize();
+                }, 150);
+            }
         }
 
         function exportData(type) {
