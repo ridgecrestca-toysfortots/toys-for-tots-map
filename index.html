@@ -1,12 +1,9 @@
-Here is the updated code with the **"Add Drop Site"** button and modal completely disabled and removed from the view, giving your donors a clean, read-only map and site list.
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toys for Tots Drop Sites | Kern County - North East Ridgecrest Drive</title>
+    <title>Toys for Tots Drop Sites & Events | Kern County - North East Ridgecrest Drive</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -26,7 +23,7 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-red-500 selection:text-white">
 
-    <!-- Top Alert Banner for Needs & Urgent Notice -->
+    <!-- Top Alert Banner -->
     <div class="bg-gradient-to-r from-red-700 via-red-600 to-red-700 text-white text-xs md:text-sm font-semibold py-2 px-4 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
             <div class="flex items-center space-x-2">
@@ -60,7 +57,6 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
             </div>
             
             <div class="flex items-center space-x-3">
-                <!-- Export Button -->
                 <button onclick="exportData('csv')" class="flex items-center space-x-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-3 py-2 rounded-lg transition">
                     <i data-lucide="download" class="w-3.5 h-3.5"></i>
                     <span>Export CSV</span>
@@ -70,11 +66,10 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
     </header>
 
     <!-- Main Content Layout -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
-        <!-- Hero & Campaign Stats Bar -->
+        <!-- Hero Card -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <!-- Hero Description Card -->
             <div class="md:col-span-2 bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-800 rounded-2xl p-5 shadow-xl relative overflow-hidden">
                 <div class="absolute -right-6 -bottom-6 opacity-10 text-red-500 pointer-events-none">
                     <i data-lucide="gift" class="w-48 h-48"></i>
@@ -87,12 +82,12 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
                     <h2 class="text-xl md:text-2xl font-bold text-white">Kern County - North East Ridgecrest Drive</h2>
                     <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
                         Find convenient local collection sites to donate new, unwrapped toys for children ages 0 to 12. 
-                        <strong>Please remember to call locations prior to dropping off toys.</strong>
+                        <strong>Please verify location hours prior to dropping off toys.</strong>
                     </p>
                 </div>
             </div>
 
-            <!-- Urgent Needs Card -->
+            <!-- Priority Needs -->
             <div class="bg-gradient-to-br from-amber-950/40 to-slate-900 border border-amber-500/30 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
                 <div class="space-y-2">
                     <div class="flex items-center justify-between text-amber-400">
@@ -103,7 +98,7 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
                     <ul class="text-xs text-slate-300 space-y-1">
                         <li class="flex items-center gap-1.5 text-amber-200">
                             <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-amber-400"></i>
-                            <span><strong>Ages 0 to 2</strong> (Infants & Toddlers)</span>
+                            <span><strong>Ages 0 to 2</strong> (Teethers, rattles, board books)</span>
                         </li>
                         <li class="flex items-center gap-1.5 text-amber-200">
                             <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-amber-400"></i>
@@ -112,46 +107,53 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
                     </ul>
                 </div>
                 <div class="pt-3 border-t border-amber-500/20 text-[11px] text-amber-300/80">
-                    * New, unwrapped items only
+                    * New, unwrapped items only (No blankets)
                 </div>
             </div>
 
-            <!-- Campaign Countdown Card -->
+            <!-- Drive Info -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between text-slate-400 mb-2">
                         <span class="text-xs font-bold uppercase tracking-wider">Drive Deadline</span>
                         <i data-lucide="clock" class="w-4 h-4 text-red-400"></i>
                     </div>
-                    <div class="text-2xl font-black text-white" id="countdownDays">December 14</div>
+                    <div class="text-2xl font-black text-white">December 14</div>
                     <p class="text-xs text-slate-400 mt-1">Final collection date for local drop boxes</p>
                 </div>
                 <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
                     <span class="text-slate-400">Total Sites</span>
-                    <span class="font-bold text-red-400 bg-red-950/60 px-2 py-0.5 rounded border border-red-800/40" id="totalSitesCount">24 Active</span>
+                    <span class="font-bold text-red-400 bg-red-950/60 px-2 py-0.5 rounded border border-red-800/40" id="totalSitesCount">22 Active</span>
                 </div>
             </div>
         </div>
 
-        <!-- Global Disclaimer Banner -->
-        <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3.5 flex items-start gap-3">
-            <i data-lucide="phone-call" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
-            <div class="text-xs md:text-sm text-amber-200">
-                <strong class="text-amber-100">Donor Notice:</strong> Operating hours and box availability may vary by location. Please <strong>call the business before dropping off toys</strong> to confirm open hours and collection box accessibility.
+        <!-- Local Events Section -->
+        <section class="space-y-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="p-2 bg-red-500/10 text-red-400 rounded-lg border border-red-500/20">
+                        <i data-lucide="calendar-days" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">Local Drive Events & Holiday Markets (2026)</h3>
+                        <p class="text-xs text-slate-400">Community gatherings and toy collection drives through Dec 25, 2026</p>
+                    </div>
+                </div>
             </div>
-        </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5" id="eventsContainer"></div>
+        </section>
 
         <!-- Search, Filter & Controls Toolbar -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-md space-y-3">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                <!-- Search Input -->
                 <div class="relative">
                     <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
                     <input type="text" id="searchInput" oninput="filterSites()" placeholder="Search site name or address..." 
                         class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-red-500 transition">
                 </div>
 
-                <!-- City Filter -->
                 <div>
                     <select id="cityFilter" onchange="filterSites()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-red-500 transition">
                         <option value="ALL">All Cities (Ridgecrest, Inyokern, Trona)</option>
@@ -161,19 +163,17 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
                     </select>
                 </div>
 
-                <!-- Category Filter -->
                 <div>
                     <select id="categoryFilter" onchange="filterSites()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-red-500 transition">
                         <option value="ALL">All Categories</option>
                         <option value="Retail & Shopping">Retail & Shopping</option>
                         <option value="Dining & Cafe">Dining & Cafe</option>
-                        <option value="Community & Museum">Community & Museum</option>
+                        <option value="Community & Faith">Community & Faith</option>
                         <option value="Services & Fitness">Services & Fitness</option>
                         <option value="Entertainment & Hobbies">Entertainment & Hobbies</option>
                     </select>
                 </div>
 
-                <!-- View Switcher Tabs -->
                 <div class="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800">
                     <button onclick="setView('cards')" id="viewCardsBtn" class="flex-1 py-1.5 text-xs font-medium rounded-md bg-slate-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition">
                         <i data-lucide="grid" class="w-3.5 h-3.5"></i>
@@ -191,12 +191,10 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
             </div>
         </div>
 
-        <!-- Cards View Container -->
-        <div id="cardsView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <!-- Dynamic JS Injected Cards -->
-        </div>
+        <!-- Cards View -->
+        <div id="cardsView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
 
-        <!-- Table View Container -->
+        <!-- Table View -->
         <div id="tableView" class="hidden bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
             <div class="overflow-x-auto custom-scrollbar">
                 <table class="w-full text-left text-xs text-slate-300">
@@ -205,19 +203,17 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
                             <th class="p-3.5">Business / Location</th>
                             <th class="p-3.5">City</th>
                             <th class="p-3.5">Address</th>
-                            <th class="p-3.5">Phone (Call First)</th>
-                            <th class="p-3.5">Category</th>
+                            <th class="p-3.5">Hours</th>
+                            <th class="p-3.5">Phone</th>
                             <th class="p-3.5 text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody" class="divide-y divide-slate-800/60">
-                        <!-- Dynamic JS Injected Table Rows -->
-                    </tbody>
+                    <tbody id="tableBody" class="divide-y divide-slate-800/60"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Visual Map View Container -->
+        <!-- Visual Map View -->
         <div id="mapView" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl space-y-4">
             <div class="flex items-center justify-between text-xs text-slate-400">
                 <span class="flex items-center gap-1">
@@ -227,7 +223,6 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
                 <span>Click pins to view site details</span>
             </div>
             
-            <!-- Simulated Map Container -->
             <div class="relative w-full h-96 bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center bg-pattern">
                 <svg class="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
                     <line x1="0" y1="20%" x2="100%" y2="20%" stroke="#475569" stroke-dasharray="4" />
@@ -237,9 +232,7 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
                     <line x1="60%" y1="0" x2="60%" y2="100%" stroke="#475569" stroke-dasharray="4" />
                 </svg>
 
-                <div id="mapPinsContainer" class="relative w-full h-full">
-                    <!-- Dynamic Map Pins -->
-                </div>
+                <div id="mapPinsContainer" class="relative w-full h-full"></div>
             </div>
         </div>
 
@@ -256,11 +249,11 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
                 </div>
                 <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
                     <h4 class="font-bold text-red-400 mb-1">Priority: Ages 10 to 12 (Females)</h4>
-                    <p class="text-slate-400">Craft kits, art sets, headphones, board games, beauty/hair accessories, and sports gear.</p>
+                    <p class="text-slate-400">Craft kits, art sets, headphones, board games, beauty accessories, and sports gear.</p>
                 </div>
                 <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
                     <h4 class="font-bold text-slate-200 mb-1">Important Requirements</h4>
-                    <p class="text-slate-400">All toys must be <strong>new and unwrapped</strong>. Please call sites prior to drop-off.</p>
+                    <p class="text-slate-400">All toys must be <strong>new and unwrapped</strong>. Blankets are not accepted. Please call sites prior to drop-off.</p>
                 </div>
             </div>
         </div>
@@ -278,33 +271,70 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
     <!-- JavaScript App Logic -->
     <script>
         const initialDropSites = [
-            { id: 1, name: "Ridgecrest Chamber of Commerce", city: "Ridgecrest", address: "128 E California Ave, Ridgecrest, CA 93555", phone: "(760) 375-8572", category: "Community & Museum", mapX: 48, mapY: 52 },
-            { id: 2, name: "China Lake Museum", city: "Ridgecrest", address: "130 E Las Flores Ave, Ridgecrest, CA 93555", phone: "(760) 375-6900", category: "Community & Museum", mapX: 52, mapY: 42 },
-            { id: 3, name: "Desert Empire Fairgrounds", city: "Ridgecrest", address: "520 S Richmond Rd, Ridgecrest, CA 93555", phone: "(760) 375-8000", category: "Community & Museum", mapX: 55, mapY: 65 },
-            { id: 4, name: "The Howl'n Coyote Bar and Grill", city: "Inyokern", address: "1353 Brown Rd, Inyokern, CA 93527", phone: "(760) 377-5000", category: "Dining & Cafe", mapX: 20, mapY: 35 },
-            { id: 5, name: "Trona Senior Center", city: "Trona", address: "13187 Market St, Trona, CA 93592", phone: "(760) 372-5889", category: "Community & Museum", mapX: 85, mapY: 25 },
-            { id: 6, name: "Walmart Supercenter", city: "Ridgecrest", address: "201 E China Lake Blvd, Ridgecrest, CA 93555", phone: "(760) 371-1359", category: "Retail & Shopping", mapX: 50, mapY: 48 },
-            { id: 7, name: "Fistful of Cards", city: "Ridgecrest", address: "204 S China Lake Blvd, Ridgecrest, CA 93555", phone: "(760) 446-4263", category: "Entertainment & Hobbies", mapX: 49, mapY: 55 },
-            { id: 8, name: "Desert Brew", city: "Ridgecrest", address: "801 N China Lake Blvd, Ridgecrest, CA 93555", phone: "(760) 382-6298", category: "Dining & Cafe", mapX: 47, mapY: 38 },
-            { id: 9, name: "The Fit Lyfe", city: "Ridgecrest", address: "117 E Ridgecrest Blvd, Ridgecrest, CA 93555", phone: "(760) 371-3488", category: "Services & Fitness", mapX: 51, mapY: 50 },
-            { id: 10, name: "State Farm - Gary Charlon", city: "Ridgecrest", address: "900 N China Lake Blvd, Ridgecrest, CA 93555", phone: "(760) 446-4589", category: "Services & Fitness", mapX: 46, mapY: 36 },
-            { id: 11, name: "Compassionate Couch", city: "Ridgecrest", address: "230 W Ridgecrest Blvd, Ridgecrest, CA 93555", phone: "(760) 375-3500", category: "Services & Fitness", mapX: 44, mapY: 51 },
-            { id: 12, name: "Wendy's", city: "Ridgecrest", address: "800 N China Lake Blvd, Ridgecrest, CA 93555", phone: "(760) 446-2828", category: "Dining & Cafe", mapX: 48, mapY: 37 },
-            { id: 13, name: "American Legion Post 684", city: "Ridgecrest", address: "641 W Inyokern Rd, Ridgecrest, CA 93555", phone: "(760) 446-0150", category: "Community & Museum", mapX: 40, mapY: 30 },
-            { id: 14, name: "Albertsons (Norma St.)", city: "Ridgecrest", address: "920 S Norma St, Ridgecrest, CA 93555", phone: "(760) 375-7570", category: "Retail & Shopping", mapX: 45, mapY: 62 },
-            { id: 15, name: "Anna's Hair Design", city: "Ridgecrest", address: "209 W Ridgecrest Blvd, Ridgecrest, CA 93555", phone: "(760) 375-1212", category: "Services & Fitness", mapX: 43, mapY: 50 },
-            { id: 16, name: "Desert Valleys Federal Credit Union", city: "Ridgecrest", address: "100 E Ward Ave, Ridgecrest, CA 93555", phone: "(760) 446-3500", category: "Services & Fitness", mapX: 52, mapY: 58 },
-            { id: 17, name: "Just for Fun Dog Agility Playground", city: "Ridgecrest", address: "800 S Richmond Rd, Ridgecrest, CA 93555", phone: "(760) 382-7890", category: "Services & Fitness", mapX: 56, mapY: 70 },
-            { id: 18, name: "Maturango Museum", city: "Ridgecrest", address: "100 E Las Flores Ave, Ridgecrest, CA 93555", phone: "(760) 375-6900", category: "Community & Museum", mapX: 51, mapY: 41 },
-            { id: 19, name: "Patriot Bar", city: "Ridgecrest", address: "200 W Inyokern Rd, Ridgecrest, CA 93555", phone: "(760) 446-2270", category: "Dining & Cafe", mapX: 42, mapY: 32 },
-            { id: 20, name: "Quinn's Hobbies", city: "Ridgecrest", address: "139 E Ridgecrest Blvd, Ridgecrest, CA 93555", phone: "(760) 375-3000", category: "Entertainment & Hobbies", mapX: 52, mapY: 51 },
-            { id: 21, name: "Schu-Fu Martial Arts Dojo #119", city: "Ridgecrest", address: "113 S China Lake Blvd, Ridgecrest, CA 93555", phone: "(760) 371-1119", category: "Services & Fitness", mapX: 49, mapY: 53 },
-            { id: 22, name: "TEYA Enterprises", city: "Ridgecrest", address: "139 S China Lake Blvd, Ridgecrest, CA 93555", phone: "(760) 375-4000", category: "Services & Fitness", mapX: 50, mapY: 54 },
-            { id: 23, name: "The Moose - China Lake Lodge 258", city: "Ridgecrest", address: "679 S Norma St, Ridgecrest, CA 93555", phone: "(760) 375-7151", category: "Community & Museum", mapX: 45, mapY: 60 },
-            { id: 24, name: "Top Shelf Aesthetics", city: "Ridgecrest", address: "121 S China Lake Blvd, Ridgecrest, CA 93555", phone: "(760) 375-7430", category: "Services & Fitness", mapX: 49, mapY: 53 }
+            { id: 1, name: "American Legion Post 684", city: "Ridgecrest", address: "641 W Inyokern Rd", hours: "Mon–Sat: 12:00 PM – 9:00 PM", phone: "(760) 446-0150", category: "Community & Faith", mapX: 40, mapY: 30 },
+            { id: 2, name: "Anna's Hair Design", city: "Ridgecrest", address: "209 W Ridgecrest Blvd", hours: "Tue–Sat: 9:00 AM – 5:00 PM", phone: "(760) 375-1212", category: "Services & Fitness", mapX: 43, mapY: 50 },
+            { id: 3, name: "China Lake Museum", city: "Ridgecrest", address: "130 E Las Flores Ave", hours: "Tue–Sat: 10:00 AM – 4:00 PM", phone: "(760) 375-6900", category: "Community & Faith", mapX: 52, mapY: 42 },
+            { id: 4, name: "Compassionate Couch", city: "Ridgecrest", address: "230 W Ridgecrest Blvd", hours: "Mon–Fri: 10:00 AM – 6:00 PM", phone: "(760) 375-3500", category: "Services & Fitness", mapX: 44, mapY: 51 },
+            { id: 5, name: "Desert Empire Fairgrounds", city: "Ridgecrest", address: "520 S Richmond Rd", hours: "Mon–Fri: 8:00 AM – 4:30 PM", phone: "(760) 375-8000", category: "Community & Faith", mapX: 55, mapY: 65 },
+            { id: 6, name: "Desert Valleys Federal Credit Union", city: "Ridgecrest", address: "100 E Ward Ave", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(760) 446-3500", category: "Services & Fitness", mapX: 52, mapY: 58 },
+            { id: 7, name: "Fistful of Cards", city: "Ridgecrest", address: "204 S China Lake Blvd", hours: "Mon–Sat: 10:00 AM – 7:00 PM", phone: "(760) 446-4263", category: "Entertainment & Hobbies", mapX: 49, mapY: 55 },
+            { id: 8, name: "Gateway Hardware", city: "Ridgecrest", address: "632 S China Lake Blvd", hours: "Mon–Sat: 8:00 AM – 6:00 PM", phone: "(760) 375-1521", category: "Retail & Shopping", mapX: 50, mapY: 59 },
+            { id: 9, name: "Howl'n Coyote Bar and Grill", city: "Inyokern", address: "1353 Brown Rd", hours: "Wed–Sun: 11:00 AM – 9:00 PM", phone: "(760) 377-5000", category: "Dining & Cafe", mapX: 20, mapY: 35 },
+            { id: 10, name: "Just for Fun Dog Agility Playground", city: "Ridgecrest", address: "800 S Richmond Rd", hours: "Daily: Sunrise – Sunset", phone: "(760) 382-7890", category: "Services & Fitness", mapX: 56, mapY: 70 },
+            { id: 11, name: "Maturango Museum, Inc.", city: "Ridgecrest", address: "100 E Las Flores Ave", hours: "Mon–Sat: 10:00 AM – 5:00 PM", phone: "(760) 375-6900", category: "Community & Faith", mapX: 51, mapY: 41 },
+            { id: 12, name: "Navy Federal Credit Union", city: "Ridgecrest", address: "111 Grove St", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(888) 842-6328", category: "Services & Fitness", mapX: 48, mapY: 45 },
+            { id: 13, name: "Patriot Bar & Grill", city: "Ridgecrest", address: "200 W Inyokern Rd", hours: "Tue–Sun: 11:00 AM – 10:00 PM", phone: "(760) 446-2270", category: "Dining & Cafe", mapX: 42, mapY: 32 },
+            { id: 14, name: "Ridgecrest Presbyterian Church", city: "Ridgecrest", address: "630 S Las Flores Ave", hours: "Mon–Thu: 9:00 AM – 2:00 PM", phone: "(760) 375-7161", category: "Community & Faith", mapX: 53, mapY: 44 },
+            { id: 15, name: "Ridgecrest Chamber of Commerce", city: "Ridgecrest", address: "128 E California Ave", hours: "Mon–Fri: 9:00 AM – 4:00 PM", phone: "(760) 375-8572", category: "Community & Faith", mapX: 48, mapY: 52 },
+            { id: 16, name: "Ridgecrest Cinemas", city: "Ridgecrest", address: "1631 N China Lake Blvd", hours: "Daily: 1:00 PM – 9:30 PM", phone: "(760) 371-1000", category: "Entertainment & Hobbies", mapX: 46, mapY: 28 },
+            { id: 17, name: "Schu-Fu Martial Arts Dojo #119", city: "Ridgecrest", address: "113 S China Lake Blvd", hours: "Mon–Fri: 3:00 PM – 8:00 PM", phone: "(760) 371-1119", category: "Services & Fitness", mapX: 49, mapY: 53 },
+            { id: 18, name: "Studio 760", city: "Ridgecrest", address: "231 W Ridgecrest Blvd", hours: "Tue–Sat: 9:00 AM – 6:00 PM", phone: "(760) 375-7760", category: "Services & Fitness", mapX: 43, mapY: 51 },
+            { id: 19, name: "TEYA Enterprises", city: "Ridgecrest", address: "139 S China Lake Blvd", hours: "Mon–Fri: 8:00 AM – 5:00 PM", phone: "(760) 375-4000", category: "Services & Fitness", mapX: 50, mapY: 54 },
+            { id: 20, name: "The Moose - China Lake Lodge 258", city: "Ridgecrest", address: "679 S Norma St", hours: "Daily: 1:00 PM – 9:00 PM", phone: "(760) 375-7151", category: "Community & Faith", mapX: 45, mapY: 60 },
+            { id: 21, name: "Top Shelf Aesthetics", city: "Ridgecrest", address: "121 S China Lake Blvd", hours: "Mon–Fri: 9:00 AM – 5:00 PM", phone: "(760) 375-7430", category: "Services & Fitness", mapX: 49, mapY: 53 },
+            { id: 22, name: "Walmart Supercenter", city: "Ridgecrest", address: "201 E China Lake Blvd", hours: "Daily: 7:00 AM – 11:00 PM", phone: "(760) 371-1359", category: "Retail & Shopping", mapX: 50, mapY: 48 }
+        ];
+
+        const localEvents = [
+            { id: 98, title: "The Market at Ridgecrest at the Patriot", location: "Patriot Bar & Grill", dateStr: "2026-11-20T20:00:00", displayDate: "Fri, Nov 20, 2026", desc: "Local holiday vendor market & toy collection point." },
+            { id: 99, title: "KTS Farmers Market #1", location: "Kerr McGee Community Center", dateStr: "2026-11-14T13:00:00", displayDate: "Sat, Nov 14, 2026 (9am - 1pm)", desc: "Toy collection booth on-site!" },
+            { id: 100, title: "KTS Farmers Market #2", location: "Kerr McGee Community Center", dateStr: "2026-11-21T13:00:00", displayDate: "Sat, Nov 21, 2026 (9am - 1pm)", desc: "Holiday shopping & toy drop-off." },
+            { id: 101, title: "KTS Farmers Market #3", location: "Kerr McGee Community Center", dateStr: "2026-11-28T13:00:00", displayDate: "Sat, Nov 28, 2026 (9am - 1pm)", desc: "Small Business Saturday drive." },
+            { id: 102, title: "KTS Farmers Market #4", location: "Kerr McGee Community Center", dateStr: "2026-12-05T13:00:00", displayDate: "Sat, Dec 5, 2026 (9am - 1pm)", desc: "Final Farmers Market drop box." },
+            { id: 103, title: "Santa's Art Shop", location: "Ridgecrest (Maturango Museum / Community Center)", dateStr: "2026-12-06T17:00:00", displayDate: "Dec 5 & 6, 2026", desc: "Annual holiday craft boutique and toy drop-off." },
+            { id: 104, title: "Scott's Toys for Tots Car Show", location: "Ridgecrest, CA", dateStr: "2026-12-12T16:00:00", displayDate: "Sat, Dec 12, 2026", desc: "Annual charity car show supporting Toys for Tots." }
         ];
 
         let sitesData = [...initialDropSites];
+
+        function renderEvents() {
+            const container = document.getElementById('eventsContainer');
+            const now = new Date();
+
+            container.innerHTML = localEvents.map(event => {
+                const eventDate = new Date(event.dateStr);
+                const isCompleted = now > eventDate;
+
+                return `
+                    <div class="bg-slate-900 border ${isCompleted ? 'border-slate-800 opacity-60' : 'border-red-500/30'} rounded-xl p-3.5 flex flex-col justify-between space-y-2 relative overflow-hidden">
+                        <div class="space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded ${isCompleted ? 'bg-slate-800 text-slate-400' : 'bg-red-500/10 text-red-400 border border-red-500/20'}">
+                                    ${isCompleted ? 'Completed' : 'Upcoming Event'}
+                                </span>
+                                <i data-lucide="${isCompleted ? 'check-circle' : 'calendar'}" class="w-4 h-4 ${isCompleted ? 'text-slate-500' : 'text-red-400'}"></i>
+                            </div>
+                            <h4 class="font-bold text-sm text-white">${event.title}</h4>
+                            <p class="text-xs text-amber-300 font-medium">${event.displayDate}</p>
+                            <p class="text-[11px] text-slate-400">${event.location}</p>
+                        </div>
+                        <p class="text-[11px] text-slate-300 pt-2 border-t border-slate-800/80">${event.desc}</p>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
 
         function renderCards(sites) {
             const container = document.getElementById('cardsView');
@@ -333,20 +363,29 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
                         <h3 class="font-bold text-base text-white leading-snug">${site.name}</h3>
                         <p class="text-xs text-slate-300 flex items-start gap-1.5">
                             <i data-lucide="map-pin" class="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5"></i>
-                            <span>${site.address}</span>
+                            <span>${site.address}, ${site.city}, CA</span>
                         </p>
                     </div>
 
-                    <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-2 flex items-center gap-2 text-[11px] text-amber-300">
-                        <i data-lucide="phone-call" class="w-3.5 h-3.5 shrink-0 text-amber-400"></i>
-                        <span>Call before dropping off: <strong>${site.phone}</strong></span>
+                    <!-- Listed Hours & Verify Caption -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 space-y-1">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-slate-400 flex items-center gap-1 font-medium">
+                                <i data-lucide="clock" class="w-3 h-3 text-red-400"></i> Hours:
+                            </span>
+                            <span class="text-slate-200 font-semibold">${site.hours}</span>
+                        </div>
+                        <div class="pt-1 border-t border-slate-800/60 flex items-center justify-between text-[11px]">
+                            <span class="text-amber-400/90 font-medium">📞 ${site.phone}</span>
+                            <span class="text-slate-500 italic text-[10px]">Verify by calling before arriving</span>
+                        </div>
                     </div>
 
                     <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
                         <a href="tel:${site.phone.replace(/[^0-9]/g, '')}" class="text-red-400 hover:text-red-300 font-semibold flex items-center gap-1">
-                            <i data-lucide="phone" class="w-3.5 h-3.5"></i> Call Business
+                            <i data-lucide="phone" class="w-3.5 h-3.5"></i> Call Location
                         </a>
-                        <a href="https://maps.google.com/?q=${encodeURIComponent(site.name + ' ' + site.address)}" target="_blank" class="text-slate-400 hover:text-white flex items-center gap-1">
+                        <a href="https://maps.google.com/?q=${encodeURIComponent(site.name + ' ' + site.address + ' ' + site.city + ' CA')}" target="_blank" class="text-slate-400 hover:text-white flex items-center gap-1">
                             <span>Directions</span>
                             <i data-lucide="external-link" class="w-3 h-3"></i>
                         </a>
@@ -364,10 +403,10 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
                     <td class="p-3.5 font-bold text-white">${site.name}</td>
                     <td class="p-3.5"><span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded text-[11px]">${site.city}</span></td>
                     <td class="p-3.5 text-slate-300">${site.address}</td>
-                    <td class="p-3.5 font-medium text-amber-300">${site.phone}</td>
-                    <td class="p-3.5 text-slate-400">${site.category}</td>
+                    <td class="p-3.5 text-slate-300">${site.hours}</td>
+                    <td class="p-3.5 font-medium text-amber-300">${site.phone} <div class="text-[9px] text-slate-500 italic">Call to verify</div></td>
                     <td class="p-3.5 text-right">
-                        <a href="https://maps.google.com/?q=${encodeURIComponent(site.name + ' ' + site.address)}" target="_blank" class="inline-flex items-center gap-1 text-red-400 hover:text-red-300 font-semibold">
+                        <a href="https://maps.google.com/?q=${encodeURIComponent(site.name + ' ' + site.address + ' ' + site.city + ' CA')}" target="_blank" class="inline-flex items-center gap-1 text-red-400 hover:text-red-300 font-semibold">
                             <span>Map</span>
                             <i data-lucide="external-link" class="w-3 h-3"></i>
                         </a>
@@ -384,10 +423,11 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
                     <div class="bg-red-600 hover:bg-red-500 text-white p-2 rounded-full shadow-lg border-2 border-slate-900 transition transform group-hover:scale-125">
                         <i data-lucide="gift" class="w-3.5 h-3.5"></i>
                     </div>
-                    <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 bg-slate-900 border border-slate-700 text-slate-100 p-2.5 rounded-xl shadow-2xl text-[11px] opacity-0 group-hover:opacity-100 pointer-events-none transition duration-150 z-20">
-                        <div class="font-bold text-white mb-0.5">${site.name}</div>
-                        <div class="text-slate-400 text-[10px] mb-1">${site.address}</div>
-                        <div class="text-amber-300 text-[10px] font-semibold">📞 ${site.phone}</div>
+                    <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-52 bg-slate-900 border border-slate-700 text-slate-100 p-2.5 rounded-xl shadow-2xl text-[11px] opacity-0 group-hover:opacity-100 pointer-events-none transition duration-150 z-20 space-y-1">
+                        <div class="font-bold text-white">${site.name}</div>
+                        <div class="text-slate-400 text-[10px]">${site.address}</div>
+                        <div class="text-slate-300 text-[10px]">⏰ ${site.hours}</div>
+                        <div class="text-amber-300 text-[10px] font-semibold">📞 ${site.phone} (Call first)</div>
                     </div>
                 </div>
             `).join('');
@@ -433,22 +473,21 @@ Here is the updated code with the **"Add Drop Site"** button and modal completel
 
         function exportData(type) {
             const csvContent = "data:text/csv;charset=utf-8," 
-                + ["Name,City,Address,Phone,Category"].concat(sitesData.map(s => `"${s.name}","${s.city}","${s.address}","${s.phone}","${s.category}"`)).join("\n");
+                + ["Name,City,Address,Hours,Phone,Category"].concat(sitesData.map(s => `"${s.name}","${s.city}","${s.address}","${s.hours}","${s.phone}","${s.category}"`)).join("\n");
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "ridgecrest_toys_for_tots_sites.csv");
+            link.setAttribute("download", "toys_for_tots_sites.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
 
         window.onload = () => {
+            renderEvents();
             filterSites();
             lucide.createIcons();
         };
     </script>
 </body>
 </html>
-
-```
